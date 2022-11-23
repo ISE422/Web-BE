@@ -7,5 +7,8 @@ const hashLength = 64;
 module.exports = {
   renderHome: (req, res, next)=>{
     res.end("Home page")
+  },
+  renderLogin: (req, res, next)=>{
+    res.end("Login page")
   }
 };
