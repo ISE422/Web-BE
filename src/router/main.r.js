@@ -7,13 +7,19 @@ const auth = require('../middleware/auth')
 const {getClient} = require('../config/postgres')
 
 
-router.get('/',mainC.renderHome)
-router.post('/test', async (req,res,next)=>{
+
+router.get('/',auth.authHaveUser,mainC.renderHomePage)
+router.get('/login',mainC.renderLoginPage)
+
+router.post('/login', mainC.handleLogin)
+router.post('/logout',auth.authHaveUser, mainC.handleLogOut)
+
+// router.post('/test', async (req,res,next)=>{
     
-        var client=await getClient();
-            var rs = await client.query('select * from public.\"uid123\"')
-            console.log(rs)
-} )
+//         var client=await getClient();
+//             var rs = await client.query('select * from public.\"uid123\"')
+//             console.log(rs)
+// } )
 
 
 module.exports = router;

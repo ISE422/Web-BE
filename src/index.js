@@ -15,6 +15,7 @@ app.use(express.static(__dirname+'/public'));
 
 
 //hbs
+require("./config/hbs")(app)
 require("./config/session")(app)
 
 
