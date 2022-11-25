@@ -2,7 +2,7 @@ const { Router } = require('express')
 const express = require('express')
 const router = express.Router()
 const mainC = require('../controllers/main.c')
-const { authAdmin } = require('../middleware/auth')
+const { authAdmin, authHaveUser, authRole } = require('../middleware/auth')
 const auth = require('../middleware/auth')
 const {getClient} = require('../config/postgres')
 
@@ -13,6 +13,13 @@ router.get('/login',mainC.renderLoginPage)
 
 router.post('/login', mainC.handleLogin)
 router.post('/logout',auth.authHaveUser, mainC.handleLogOut)
+
+router.get('/admin', authHaveUser, authRole('admin'), mainC.renderAdminPage)
+router.get('/student', authHaveUser, authRole('student'), mainC.renderStudentPage)
+router.get('/teacher', authHaveUser, authRole('teacher'), mainC.renderTeacherPage)
+router.get('/notification',authHaveUser, authRole(['teacher','student']), mainC.renderNotiPage)
+
+
 
 // router.post('/test', async (req,res,next)=>{
     

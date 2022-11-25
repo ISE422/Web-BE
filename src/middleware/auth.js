@@ -9,4 +9,13 @@ module.exports = {
       res.redirect('/login')
     }
   },
+  authRole: roles =>{
+    return (req,res,next)=>{
+      if(!roles.includes(req.session.role)){
+        return res.status(401).end('You dont have permisstion!!')
+      }else{
+        next()
+      }
+    }
+  }
 };

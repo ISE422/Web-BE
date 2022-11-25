@@ -1,11 +1,12 @@
 <div class="row">
-    <form action="/logout" class="d-flex flex-end" method="post">
-      <button
-        class="btn btn-outline-success"
-        name="option"
-        value="logout"
-        type="submit"
-      >Logout</button>
-    </form>
         <h5 class="card-reader mgl-20 color-blue">HOME</h5>
+        <h5>ROLE: {{role}}</h5>
+        <button
+        onclick="window.location.href='/{{role}}'"
+        class="btn btn-outline-success"
+      >INFORMATION</button>
+      <button
+        onclick="window.location.href='/notification'"
+        class="btn btn-outline-success"
+      >NOTICE</button>
 </div>
