@@ -1,0 +1,40 @@
+<div class="row d-flex justify-content-center">
+  <div class="row text-center">
+    <form method="post" action="/login">
+      <div class="form-field">
+        <div>
+          <input
+            type="text"
+            class="form-input"
+            id="txtUsername"
+            name="txtUsername"
+            placeholder=" "
+            required
+          />
+          <label for="txtUsername" class="form-label">Tài khoản</label>
+        </div>
+      </div>
+      <div class="form-field">
+        <div>
+          <input
+            type="password"
+            class="form-input"
+            id="txtPassword"
+            name="txtPassword"
+            placeholder=" "
+            required
+          />
+          <label for="txtPassword" class="form-label">Mật khẩu</label>
+        </div>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox" />Show Password
+      </div>
+      <input class="button" type="submit" name="option" value="login" />
+    </form>
+  </div>
+  <div class="row text-center">
+    <h1 class="text-danger">{{notice}}</h1>
+  </div>
+
+</div>

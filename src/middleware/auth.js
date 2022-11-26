@@ -5,19 +5,17 @@ module.exports = {
     if (req.session.uid) {
       next();
     } else {
-      console.log(req.cookies);
-      res.render("login", {
-        c_username: req.cookies.username,
-        c_password: req.cookies.password,
-        content: "You need to login",
-      });
+      console.log("message: ", req.message);
+      res.redirect('/login')
     }
   },
-  authAdmin: (req, res, next) => {
-    if (req.session.isAdmin == 1) {
-      next();
-    } else {
-      res.redirect('/')
+  authRole: roles =>{
+    return (req,res,next)=>{
+      if(!roles.includes(req.session.role)){
+        return res.status(401).end('You dont have permisstion!!')
+      }else{
+        next()
+      }
     }
-  },
+  }
 };
