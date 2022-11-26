@@ -1,6 +1,6 @@
 const { publicDecrypt } = require("crypto");
 const express = require("express");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const path = require("path");
 const myRouter = require("./router/main.r.js");
@@ -11,13 +11,11 @@ const port = 5000;
 //loger
 app.use(cookieParser());
 // app.use(morgan("combined"));
-app.use(express.static(__dirname+'/public'));
-
+app.use(express.static(__dirname + "/public"));
 
 //hbs
-require("./config/hbs")(app)
-require("./config/session")(app)
-
+require("./config/hbs")(app);
+require("./config/session")(app);
 
 // parse data post method
 app.use(express.json());
