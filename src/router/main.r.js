@@ -1,3 +1,4 @@
+
 const { Router } = require('express')
 const express = require('express')
 const router = express.Router()
@@ -34,3 +35,4 @@ router.get('/addacc', authHaveUser, authRole('admin'), mainC.renderAddAccount)
 
 
 module.exports = router;
+
