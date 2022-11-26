@@ -20,8 +20,12 @@ router.get('/teacher', authHaveUser, authRole('teacher'), mainC.renderTeacherPag
 router.get('/notification',authHaveUser, authRole(['teacher','student']), mainC.renderNotiPage)
 
 
+router.get('/addacc', authHaveUser, authRole('admin'), mainC.renderAddAccount)
 
-// router.post('/test', async (req,res,next)=>{
+
+
+
+// router.get('/test', async (req,res,next)=>{
     
 //         var client=await getClient();
 //             var rs = await client.query('select * from public.\"uid123\"')

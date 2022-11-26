@@ -1,0 +1,53 @@
+<div class="row d-flex justify-content-center">
+  <div class="row text-center">
+    <form method="post" action="/login">
+      <div class="form-field">
+        <div>
+          <input
+            type="text"
+            class="form-input"
+            id="className"
+            name="className"
+            placeholder=" "
+            required
+          />
+          <label for="className" class="form-label">Ten lop</label>
+        </div>
+      </div>
+      <div class="form-field">
+        <div>
+          <input
+            type="text"
+            class="form-input"
+            id="totalStudents"
+            name="totalStudents"
+            placeholder=" "
+            required
+          />
+          <label for="totalStudents" class="form-label">Si so</label>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <div>
+          <input
+            type="text"
+            class="form-input"
+            id="teacherName"
+            name="teacherName"
+            placeholder=" "
+            required
+          />
+          <label for="teacherName" class="form-label">ten GVCN</label>
+        </div>
+      </div>
+
+      <input class="button" type="submit" name="option" value="Add" />
+      <input class="button" type="reset" name="reset" value="Reset" />
+    </form>
+  </div>
+  <div class="row text-center">
+    <h1 class="text-danger">{{notice}}</h1>
+  </div>
+
+</div>

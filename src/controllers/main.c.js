@@ -8,7 +8,8 @@ module.exports = {
   renderHomePage: (req, res, next) => {
     res.render("home",{
       role: req.session.role,
-      showNav: true
+      showNav: true,
+      showSide: true
     });
   },
   renderLoginPage: (req, res, next) => {
@@ -49,6 +50,15 @@ module.exports = {
     });
   },
 
+  renderAddAccount: (req, res, next) => {
+    res.render("admin/add.hbs",{
+      showNav: true,
+      showSide: true
+    });
+  },
+
+
+
   handleLogin: (req, res, next) => {
     try {
 
@@ -73,11 +83,11 @@ module.exports = {
             req.session.save((err) => {
               if (err) next(err);
               res.cookie("username", username, {
-                maxAge: 900000,
+                maxAge: 5*60*1000,
                 httpOnly: true,
               });
               res.cookie("password", password, {
-                maxAge: 900000,
+                maxAge: 5*60*1000,
                 httpOnly: true,
               });
               res.redirect("/");
