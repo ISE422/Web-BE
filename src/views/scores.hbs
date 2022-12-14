@@ -1,10 +1,8 @@
 <div class="main-container d-flex">
                 {{>sidebar}}
-
-
         <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
             <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Score</div>
-            <form action="" class="container">
+            <form action="/scores" class="container">
                 <div class="row justify-content-around">
                     <label class="col-1" for="semester">Semester:</label>
                     <select class="col-1" name="semester" id="semester">
@@ -14,8 +12,9 @@
                     <div class="col-3"></div>
                     <label class="col-1" for="year">Year:</label>
                     <select class="col-1" name="year" id="year">
-                        <option value="1">2021</option>
-                        <option value="2">2022</option>
+                        {{#each years}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
                     </select>
                 </div>
                 <div class="row my-5 justify-content-center">   
@@ -34,30 +33,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{#each scores}}
                     <tr>
-                        <td>Toán</td>
-                        <td>1</td>
-                        <td>8</td>
-                        <td>9</td>
-                        <td>10</td>
-                        <td>x</td>
+                        <td>{{this.sub}}</td>
+                        <td>{{this.sem}}</td>
+                        <td>{{this.score_15}}</td>
+                        <td>{{this.score_45}}</td>
+                        <td>{{this.score_final}}</td>
+                        <td>{{this.average}}</td>
                     </tr>
-                    <tr>
-                        <td>Văn</td>
-                        <td>1</td>
-                        <td>8</td>
-                        <td>7</td>
-                        <td>10</td>
-                        <td>x</td>
-                    </tr>
-                    <tr>
-                        <td>Anh</td>
-                        <td>2</td>
-                        <td>9</td>
-                        <td>9</td>
-                        <td>7</td>
-                        <td>x</td>
-                    </tr>
+                    {{/each}}
                 </tbody>
             </table>
         </div>

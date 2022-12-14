@@ -6,32 +6,7 @@ const hashLength = 64;
 
 module.exports = {
   renderHomePage: (req, res, next) => {
-    let admin = false,
-      student = false,
-      teacher = false;
-
-    switch (req.session.role) {
-      case 'admin':
-        admin=true
-        break;
-      case 'teacher':
-        teacher=true
-        break;
-      case 'student':
-        student=true
-        break;
-
-      default:
-        break;
-    }
-
-    res.render("home", {
-      role: req.session.role,
-      showNav: true,
-      admin: admin,
-      student: student,
-      teacher: teacher
-    });
+    res.redirect('/infomation')
   },
   renderLoginPage: (req, res, next) => {
     res.render("login");
@@ -167,10 +142,27 @@ module.exports = {
   },
 
   renderClasses: (req, res, next) => {
+    let obj=[]
+    let classes=['10_1','10_2','10_3']
+    if(req.query.class){
+      console.log("have query");
+      console.log("classes:::", req.query);      
+      let arr=[1,2,3]
+      for (item in arr){
+        let temp = {}
+        temp.no=item
+        temp.name='Nguyen van a'
+        temp.gender='nam'
+        temp.dob='01/01/2002'
+        temp.address='hcm'
+        obj.push(temp)
+      }
+    }
     try{
         res.render('classes',{
-        teacher: true
-
+        teacher: true,
+        list: obj,
+        classes: classes
         })
     }catch(err){
       next(err)
@@ -178,9 +170,30 @@ module.exports = {
   },
 
   renderScores: (req, res, next) => {
+    let years=['2020','2021','2022']
+    let scores=[]
+    let arr=[1,2,3,4,5,6]
+    if(req.query.semester && req.query.year){
+      for(item in arr){
+        let temp={}
+        temp.sub='Toan'
+        temp.sem=req.query.semester
+        temp.score_15=10
+        temp.score_45=9.5
+        temp.score_final=8.3
+        temp.average =
+        Number(((temp.score_15+temp.score_45+temp.score_final)/3).toFixed(1));
+        
+        scores.push(temp)
+      }
+      
+    }
+    console.log("scores:::", req.query);      
     try{
         res.render('scores',{
-        teacher: true
+        teacher: true,
+        years: years,
+        scores: scores
 
         })
     }catch(err){
@@ -188,20 +201,82 @@ module.exports = {
     }
   },
   renderLeaderBoard: (req, res, next) => {
+    console.log("leader:::", req.query);
+    
+    let data =[]
+    let arr=[1,2,3,4,5,6]
+
+    if(req.query.subjects){
+      for(item in arr){
+        let temp={}
+        temp.name='nguyen van a'
+        temp.gpa=9.4
+        temp.ranking=1
+        temp.grade=req.query.grade
+        temp.semester=req.query.semester
+        temp.year =req.query.year
+        data.push(temp)
+      }}
+    let years=['2020','2021','2022']
     try{
         res.render('leaderboard',{
-        teacher: true
-
+        teacher: true,
+        years: years,
+        data: data
         })
     }catch(err){
       next(err)
     }
-  },
+},
   renderCreateReport: (req, res, next) => {
+    console.log("report:::", req.query);
+
+    let years=['2020','2021','2022']
+
+    let data =[]
+    let arr=[1,2,3,4,5,6]
+    let table1=false
+    let table2=false
+
+    if(req.query.report){
+      switch (req.query.report) {
+        case 'bcmh':
+          for(item in arr){
+            let temp={}
+            temp.no=item
+            temp.class='10_1'
+            temp.totalstudents=40
+            temp.passed=32
+            temp.rate=
+            Number((temp.passed*100/temp.totalstudents).toFixed(1));
+            data.push(temp)
+          }
+          table1=true
+          break;
+        case 'bchk':
+        for(item in arr){
+          let temp={}
+          temp.no=item
+          temp.class='10_1'
+          temp.sub=req.query.subjects
+          temp.totalstudents=40
+          temp.passed=32
+          temp.rate=
+          Number((temp.passed*100/temp.totalstudents).toFixed(1));
+          data.push(temp)
+        }
+        table2=true
+        break;
+      }
+      }
+
     try{
         res.render('report',{
-        teacher: true
-
+        teacher: true,
+        years: years,
+        data: data,
+        table1: table1,
+        table2: table2,
         })
     }catch(err){
       next(err)

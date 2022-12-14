@@ -4,27 +4,27 @@
 
         <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
             <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9;">Create Report</div>
-            <form action="" class="container">
+            <form action="/createreport" class="container">
                 <div class="row justify-content-center">
                     <label class="col-1" for="report">Report:</label>
                     <select id="select_BC" class="col-2" name="report" id="report">
-                        <option value="2">Báo cáo môn học</option>
-                        <option value="1">Báo cáo học kỳ</option>
+                        <option value="bcmh">Báo cáo môn học</option>
+                        <option value="bchk">Báo cáo học kỳ</option>
                     </select>
 
                     <div class="col-1"></div>
 
                     <label class="col-1" for="subjects">Subjects:</label>
                     <select class="col-1" name="subjects" id="subjects">
-                        <option value="Toán">Toán</option>
-                        <option value="Lý">Lý</option>
-                        <option value="Hóa">Hóa</option>
-                        <option value="Sinh">Sinh</option>
-                        <option value="Sử">Sử</option>
-                        <option value="Địa">Địa</option>
-                        <option value="Văn">Văn</option>
-                        <option value="Đ.Đức">Đ.Đức</option>
-                        <option value="T.Dục">T.Dục</option>
+                        <option value="toan">Toán</option>
+                        <option value="ly">Lý</option>
+                        <option value="hoa">Hóa</option>
+                        <option value="sinh">Sinh</option>
+                        <option value="su">Sử</option>
+                        <option value="dia">Địa</option>
+                        <option value="van">Văn</option>
+                        <option value="dduc">Đ.Đức</option>
+                        <option value="tduc">T.Dục</option>
                     </select>
 
                     <div class="col-1"></div>
@@ -39,16 +39,19 @@
 
                     <label class="col-1" for="year">Year:</label>
                     <select class="col-1" name="year" id="year">
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
+                        {{#each years}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
                     </select>
                 </div>
-            </form>
-            <div class="row my-5 justify-content-center">   
-                <button id="btn_create" class="btn col-1" style="background: #f8c4d9;">Create</button>
+                <div class="row my-5 justify-content-center">   
+                <button type="submit" id="btn_create" class="btn col-1" style="background: #f8c4d9;">Create</button>
             </div>
-            <hr>
+            </form>
             
+            <hr>
+
+            {{#if table2}}
             <div id="table1">
                 <div class="col-md-12 fs-4 p-2 text-center mb-4">Báo Cáo Học Kỳ</div>
                 <table id="BCHK" class="table table-striped" style="width:100%">
@@ -58,35 +61,24 @@
                             <th>Class</th>
                             <th>Total sutdents</th>
                             <th>Passed</th>
-                            <th>Rate</th>
+                            <th>Rate (%)</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each data}}
                         <tr>
-                            <td>1</td>
-                            <td>10.3</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
+                            <td>{{this.no}}</td>
+                            <td>{{this.class}}</td>
+                            <td>{{this.totalstudents}}</td>
+                            <td>{{this.passed}}</td>
+                            <td>{{this.rate}}</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>10.4</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>10.5</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
-                        </tr>
+                        {{/each}}
                     </tbody>
             </table>
             </div>
-
+            {{/if}}
+            {{#if table1}}
             <div id="table2">
                 <div class="col-md-12 fs-4 p-2 text-center mb-4">Báo Cáo Môn Học</div>
                 <table id="BCMH" class="table table-striped" style="width:100%">
@@ -94,60 +86,32 @@
                         <tr>
                             <th>No</th>
                             <th>Class</th>
-                            <th>Subject</th>
+                            <th>Subjects</th>
                             <th>Total sutdents</th>
                             <th>Passed</th>
-                            <th>Rate</th>
+                            <th>Rate (%)</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each data}}
                         <tr>
-                            <td>1</td>
-                            <td>10.3</td>
-                            <td>Toán</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
+                            <td>{{this.no}}</td>
+                            <td>{{this.class}}</td>
+                            <td>{{this.sub}}</td>
+                            <td>{{this.totalstudents}}</td>
+                            <td>{{this.passed}}</td>
+                            <td>{{this.rate}}</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>10.4</td>
-                            <td>Văn</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>10.5</td>
-                            <td>Anh</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
-                        </tr>
+                        {{/each}}
                     </tbody>
             </table>
             </div>
+            {{/if}}
         </div>
     </div>
     <script>
         $(document).ready(function () {
-            $('#BCMH').DataTable();
-            $('#BCHK').DataTable();
-            $("#table2").hide();
-            $("#table1").hide();
-            $("#btn_create").click(function(){
-                var conceptName = $('#select_BC').find(":selected").val();
-                if (conceptName == 1)
-                    {   
-                        $("#table1").show();
-                        $("#table2").hide();
-                    }
-                else 
-                    {
-                        $("#table1").hide();
-                        $("#table2").show();
-                    }
-            }) 
+            $('#BCMH')? $('#BCMH').DataTable(): null
+            $('#BCHK')? $('#BCHK').DataTable();: null
         });
     </script>
