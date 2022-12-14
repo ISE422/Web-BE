@@ -1,40 +1,63 @@
-<div class="row d-flex justify-content-center">
-  <div class="row text-center">
-    <form method="post" action="/login">
-      <div class="form-field">
-        <div>
-          <input
-            type="text"
-            class="form-input"
-            id="txtUsername"
-            name="txtUsername"
-            placeholder=" "
-            required
-          />
-          <label for="txtUsername" class="form-label">Tài khoản</label>
-        </div>
-      </div>
-      <div class="form-field">
-        <div>
-          <input
-            type="password"
-            class="form-input"
-            id="txtPassword"
-            name="txtPassword"
-            placeholder=" "
-            required
-          />
-          <label for="txtPassword" class="form-label">Mật khẩu</label>
-        </div>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox" />Show Password
-      </div>
-      <input class="button" type="submit" name="option" value="login" />
-    </form>
-  </div>
-  <div class="row text-center">
-    <h1 class="text-danger">{{notice}}</h1>
-  </div>
+<div
+  style="background-image: linear-gradient(to right, #85FFBD 0%, #FFFB7D 100%);"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div
+          class="card my-5"
+          style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
+        >
 
+          <form
+            class="card-body p-lg-5 rounded"
+            style="background-image: linear-gradient(to right, #d9afd9, #97d9e1);"
+            method="post" 
+            action="/login"
+          >
+
+            <div class="text-center">
+              <img
+                src="/imgs/logo.png"
+                class="img-fluid mt-3 mb-5"
+                width="200px"
+                alt="profile"
+                style=" height: 150px;
+                    width: 150px;
+                    object-fit: fill;"
+              />
+            </div>
+
+            <div class="mb-4">
+              <input
+                type="text"
+                class="form-control"
+                id="Username"
+                name="username"
+                aria-describedby="emailHelp"
+                placeholder="User Name"
+              />
+            </div>
+            <div class="mb-5">
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Password"
+              />
+            </div>
+            <div class="text-center"><button
+                type="submit"
+                class="btn px-5 mb-5 w-100"
+                style="  background-color: #b068ef;
+                    color: #fff; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;"
+              >Login</button></div>
+          </form>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>

@@ -4,9 +4,10 @@ const cookieParser = require('cookie-parser');
 const morgan = require("morgan");
 const path = require("path");
 const myRouter = require("./router/main.r.js");
+require('dotenv').config()
 
 const app = express();
-const port = 5000;
+const port = process.env.port|| 5000;
 
 //loger
 app.use(cookieParser());

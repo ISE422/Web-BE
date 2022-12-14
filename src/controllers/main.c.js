@@ -6,10 +6,31 @@ const hashLength = 64;
 
 module.exports = {
   renderHomePage: (req, res, next) => {
-    res.render("home",{
+    let admin = false,
+      student = false,
+      teacher = false;
+
+    switch (req.session.role) {
+      case 'admin':
+        admin=true
+        break;
+      case 'teacher':
+        teacher=true
+        break;
+      case 'student':
+        student=true
+        break;
+
+      default:
+        break;
+    }
+
+    res.render("home", {
       role: req.session.role,
       showNav: true,
-      showSide: true
+      admin: admin,
+      student: student,
+      teacher: teacher
     });
   },
   renderLoginPage: (req, res, next) => {
@@ -17,53 +38,47 @@ module.exports = {
   },
 
   renderAdminPage: (req, res, next) => {
-    res.render("info",{
-      
+    res.render("info", {
       content: req.session.role,
       username: req.session.uid,
-      showNav: true
-
+      showNav: true,
     });
   },
 
   renderStudentPage: (req, res, next) => {
-    res.render("info",{
+    res.render("info", {
       content: req.session.role,
       username: req.session.uid,
-      showNav: true
-
+      showNav: true,
     });
   },
 
   renderTeacherPage: (req, res, next) => {
-    res.render("info",{
+    res.render("info", {
       username: req.session.uid,
       content: req.session.role,
-      showNav: true
-
+      showNav: true,
     });
   },
 
   renderNotiPage: (req, res, next) => {
-    res.render("noti",{
-      showNav: true
+    res.render("noti", {
+      showNav: true,
     });
   },
 
   renderAddAccount: (req, res, next) => {
-    res.render("admin/add.hbs",{
+    res.render("admin/add.hbs", {
       showNav: true,
-      showSide: true
+      showSide: true,
     });
   },
 
-
-
   handleLogin: (req, res, next) => {
     try {
-
-      let username = req.body.txtUsername;
-      let password = req.body.txtPassword;
+      console.log(req.body);
+      let username = req.body.username;
+      let password = req.body.password;
       let passwordHash = CryptoJS.SHA3(password, {
         outputLength: hashLength * 4,
       }).toString(CryptoJS.enc.Hex);
@@ -83,11 +98,11 @@ module.exports = {
             req.session.save((err) => {
               if (err) next(err);
               res.cookie("username", username, {
-                maxAge: 5*60*1000,
+                maxAge: 5 * 60 * 1000,
                 httpOnly: true,
               });
               res.cookie("password", password, {
-                maxAge: 5*60*1000,
+                maxAge: 5 * 60 * 1000,
                 httpOnly: true,
               });
               res.redirect("/");
@@ -114,5 +129,82 @@ module.exports = {
     delete req.session.role;
     console.log("sessionafter : ", req.session);
     res.redirect("/");
+  },
+  renderInfo: (req, res, next) => {
+    try{
+      let info = mainM.getInfoByID()
+      console.log(info);
+      info.gender=='Nu'? info.ismale=false:info.isfemale=false
+      if(info){
+        res.render('info',{
+          obj: info,
+          teacher: true
+        })
+      }
+    }catch(err){
+      next(err)
+    }
+  },
+
+  handleUpdateInfo: (req, res, next) => {
+    let newInfo = req.body
+    console.log("newInfo ", newInfo);
+    
+    let user = mainM.getInfoByID();
+    // let user
+    if(user){
+      let update = mainM.updateInfoByID()
+      res.render('info',{
+        obj: update,
+        showNav: true,
+        teacher: true
+      })
+    }else{
+      res.redirect('/infomation',{
+      })
+    }
+    
+  },
+
+  renderClasses: (req, res, next) => {
+    try{
+        res.render('classes',{
+        teacher: true
+
+        })
+    }catch(err){
+      next(err)
+    }
+  },
+
+  renderScores: (req, res, next) => {
+    try{
+        res.render('scores',{
+        teacher: true
+
+        })
+    }catch(err){
+      next(err)
+    }
+  },
+  renderLeaderBoard: (req, res, next) => {
+    try{
+        res.render('leaderboard',{
+        teacher: true
+
+        })
+    }catch(err){
+      next(err)
+    }
+  },
+  renderCreateReport: (req, res, next) => {
+    try{
+        res.render('report',{
+        teacher: true
+
+        })
+    }catch(err){
+      next(err)
+    }
   },
 };
