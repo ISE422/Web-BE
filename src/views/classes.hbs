@@ -1,0 +1,46 @@
+<div class="main-container d-flex">
+        {{>sidebar}}
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9;">Classes</div>
+            <form action="/classes" class="container mt-3 mb-5">
+                <div class="row justify-content-center">
+                    <label class="col-1" for="class">Class:</label>
+                    <select class="col-1" name="class" id="class">
+                        {{#each classes}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                    <div class="col-3"></div>
+                    <button class="btn col-1" style="background: #f8c4d9;">Show</button>
+                </div>
+            </form>
+            <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Birthdate</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each list}}
+                    <tr>
+                        <td>{{this.no}}</td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.gender}}</td>
+                        <td>{{this.dob}}</td>
+                        <td>{{this.address}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>

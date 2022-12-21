@@ -1,4 +1,4 @@
-{{#if showSide}}
+{{!-- {{#if admin}}
 <div class="container-fluid">
     <div class="row flex-nowrap">
         <div class="col">
@@ -15,3 +15,133 @@
     </div>
 </div>
 {{/if}}
+
+{{#if teacher}}
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col">
+            <div id="sidebar" class="collapse collapse-horizontal show border-end">
+                <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
+                    <a href="/classes" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>Danh sach lop dang day</span> </a>
+                    <a href="/grades" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>Danh sach diem</span> </a>
+                    <a href="/report" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>Bao cao</span> </a>
+                    <a href="/topstudents" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>Top hoc sinh</span> </a>
+                    <a href="/infomation" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>Thong tin</span> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}} --}}
+
+{{#if teacher}}
+  <div
+    class="sidebar"
+    id="side_nav"
+    style="background: #c5eeeb; min-width: 250px; max-width: 250px; position: relative;"
+  >
+    <div style="position: fixed;">
+      <div class="header-box px-2 pt-3 pb-4">
+        <img
+          src="imgs/logo.png"
+          style=" height: 150px;
+                    width: 150px;
+                    object-fit: fill;"
+          class="mx-auto d-block pb-3"
+        />
+        <h1 class="fs-4"><span
+            class="text-dark rounded shadow px-2 mx-5 d-block text-center"
+            style="background: #f8c4d9;"
+          >Teacher</span></h1>
+      </div>
+
+      <ul class="list-unstyled px-4 py-2">
+
+            <li  class="py-2">
+        <form id="infoform" action="/infomation">
+                <a
+                id="infobtn"
+            class="text-decoration-none"
+          ><i class="fa-regular fa-user"></i> Profile</a>
+        </form>
+          </li>
+        
+        <li class="py-2">
+        <form id="classesform" action="/classes">
+          <a
+            id="classesbtn"
+            class="text-decoration-none"
+          ><i class="fa-regular fa-clipboard"></i> Classes</a>
+        </form>
+          </li>
+        
+        <li class="py-2">
+        <form id="scoresform" action="/scores">
+          <a
+          id="scoresbtn"
+            class="text-decoration-none"
+          ><i class="fa-regular fa-star"></i> Student's Score</a>
+        </form>
+          </li>
+        
+        
+        <li class="py-2">
+        <form id="leaderboardform" action="/leaderboard">
+          <a
+          id="leaderboardbtn"
+            class="text-decoration-none"
+          ><i class="fa-solid fa-list"></i> Leaderboard</a>
+        </form>
+          </li>
+        
+        <li class="py-2">
+        <form id="createreportform" action="/createreport">
+          <a
+          id="createreportbtn"
+            class="text-decoration-none"
+          ><i class="fa-regular fa-pen-to-square"></i> Create report</a>
+        </form>
+          </li>
+      </ul>
+      <hr style="background: #FEB7D3;" class="mx-2" />
+      <div class="text-center">
+        <form id="logoutform" action="/logout" 
+         method="post">
+        <a
+            id="logoutbtn" href="#" class="text-decoration-none">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>Sign out</a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{{/if}}
+<script src="./jquery.js"></script>
+</script>
+<script>
+  $('#logoutbtn').click(function (){ 
+    $('#logoutform').submit()
+  });
+  $('#infobtn').click(function (){ 
+    $('#infoform').submit()
+  });
+  $('#classesbtn').click(function (){ 
+    $('#classesform').submit()
+  });
+  $('#scoresbtn').click(function (){ 
+    $('#scoresform').submit()
+  });
+  $('#leaderboardbtn').click(function (){ 
+    $('#leaderboardform').submit()
+  });
+  $('#createreportbtn').click(function (){ 
+    $('#createreportform').submit()
+  });
+
+  $("li").hover(function(){
+  $(this).css("cursor", "pointer");
+});
+
+
+
+</script>

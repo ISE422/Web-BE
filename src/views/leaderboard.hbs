@@ -1,0 +1,79 @@
+<div class="main-container d-flex">
+                {{>sidebar}}
+
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9;">Leader Board</div>
+            <form action="/leaderboard" class="container">
+                <div class="row justify-content-around">
+                    <label class="col-1" for="subjects">Subjects:</label>
+                    <select class="col-1" name="subjects" id="subjects">
+                        <option value="all">Tất cả</option>
+                        <option value="toan">Toán</option>
+                        <option value="ly">Lý</option>
+                        <option value="hoa">Hóa</option>
+                        <option value="sinh">Sinh</option>
+                        <option value="su">Sử</option>
+                        <option value="dia">Địa</option>
+                        <option value="van">Văn</option>
+                        <option value="dduc">Đ.Đức</option>
+                        <option value="tduc">T.Dục</option>
+                    </select>
+
+                    <label class="col-1" for="grade">Grade:</label>
+                    <select class="col-1" name="grade" id="grade">
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+        
+                    <label class="col-1" for="semester">Semester:</label>
+                    <select class="col-1" name="semester" id="semester">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+
+                    <label class="col-1" for="year">Year:</label>
+                    <select class="col-1" name="year" id="year">
+                        {{#each years}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="row my-5 justify-content-center gap-5">   
+                    <button name="type" value="top10" class="btn col-1" style="background: #f8c4d9;">Top 10</button>
+                    <button name="type" value="top50" class="btn col-1" style="background: #f8c4d9;">Top 50</button>
+                </div>
+            </form>
+                <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>GPA</th>
+                        <th>Ranking</th>
+                        <th>Grade</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each data}}
+                    <tr>
+                        <td>{{this.name}}</td>
+                        <td>{{this.gpa}}</td>
+                        <td>{{this.ranking}}</td>
+                        <td>{{this.grade}}</td>
+                        <td>{{this.semester}}</td>
+                        <td>{{this.year}}</td>
+                    </tr>
+                    {{/each}}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
