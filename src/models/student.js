@@ -1,16 +1,31 @@
 const { pgp, db } = require("../config/postgres");
 
-exports.getInfo = async function () {
-  let obj = {};
-  obj.id = "001";
-  obj.name = "Nguyen Van A";
-  obj.gender = "Nu";
-  obj.dob = "01/01/1999";
-  obj.address = "HCM city";
-  obj.email = "123@abc";
-  return obj;
+exports.getInfo = async function (username) {
+  const rs = await db.any('select * from public."HocSinh"where"maHS" = $1', [
+    username,
+  ]);
+  return rs;
 };
 
-exports.updateInfo = async function (obj) {
-  return obj;
+exports.getEmail = async function (email) {
+  const rs = await db.any('select * from public."HocSinh"where"email" = $1', [
+    email,
+  ]);
+  return rs;
+};
+
+exports.updateInfo = async function (newInfo) {
+  const rs = await db.any(
+    'UPDATE public."HocSinh" SET "hoTen" = $1, "gioiTinh" = $2 , "email" = $3 , "ngaySinh" = $4 , "diaChi" = $5  WHERE "maHS" = $6 ',
+    [
+      newInfo.Name,
+      newInfo.gioiTinh,
+      newInfo.Email,
+      newInfo.Birthday,
+      newInfo.Address,
+      newInfo.ID,
+    ]
+  );
+
+  return rs;
 };

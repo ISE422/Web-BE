@@ -2,15 +2,20 @@
         {{>sidebar-student}}
 
         <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
-                     {{#if reportMessage}}
-  <div class="alert alert-success" role="alert">
-    <h3 class="text-center fw-bold">
-      {{reportMessage}}
-    </h3>
-
-  </div>
-
-{{/if}}
+  {{#if reportMessage}}
+      <div class="alert alert-success" role="alert">
+        <h3 class="text-center fw-bold">
+           {{reportMessage}}
+         </h3>
+       </div>
+  {{/if}}
+  {{#if errorMessage}}
+        <div class="alert alert-danger" role="alert">
+          <h3 class="text-center fw-bold">
+              {{errorMessage}}
+          </h3>
+        </div>
+  {{/if}}
           <div class="col-md-12 fs-2 p-2 text-white text-center rounded" style="background: #f8c4d9;">Profile</div>
 
           <form class="row g-3 mx-3 my-1" action="/edit-student-infomation" method="POST">
@@ -22,7 +27,18 @@
                 class="form-control"
                 name="ID"
                 id="ID"
-                value="{{obj.id}}"
+                value="{{obj.maHS}}"
+                disabled
+              />
+            </div>
+                    <div class="col-md-12">
+              <label for="IDC" class="form-label">Class</label>
+              <input
+                type="text"
+                class="form-control"
+                name="IDC"
+                id="IDC"
+                value="{{obj.maLop}}"
                 disabled
               />
             </div>
@@ -33,7 +49,7 @@
                 type="firstName"
                 class="form-control"
                 id="inputName"
-                value="{{obj.name}}"
+                value="{{obj.hoTen}}"
                 name="Name"
                 disabled
               />
@@ -45,7 +61,7 @@
                 type="birthday"
                 class="form-control"
                 id="inputBirthday"
-                value="{{obj.dob}}"
+                value="{{obj.ngaySinh}}"
                 name="Birthday"
                 disabled
               />
@@ -90,7 +106,7 @@
                 class="form-control"
                 id="inputAddress"
                 disabled
-                value="{{obj.address}}"
+                value="{{obj.diaChi}}"
               />
             </div>
       
@@ -112,6 +128,7 @@
             <button id="btn_edit" class="btn" style="background: #f8c4d9;" type="button">Edit</button>
             <button id="btn_save" class="btn" style="background: #f8c4d9;" type="submit">Save</button>
           </div>
+            <input type="hidden" value="{{obj.maHS}}" name="ID">
           </form>
       
         </div>
