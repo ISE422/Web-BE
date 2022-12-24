@@ -1,0 +1,155 @@
+<div class="main-container d-flex">
+        {{>adsidebar}}
+
+        <div class="content container justify-content-center mt-1" style="min-height: 100vh; width: 100%;">
+          <div class="col-md-12 fs-2 p-2 text-white text-center rounded" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Create Class</div>
+
+          <form class="row g-3 my-1 container justify-content-center">
+            
+            <div class="col-md-4">
+              <label for="grade" class="form-label">Grade</label>
+              <input
+                type="text"
+                class="form-control"
+                id="grade"
+                placeholder="12"
+              />
+            </div>
+            <div class="col-md-4">
+              <label for="classname" class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="classname"
+                placeholder="12.3"
+              />
+            </div>
+            <div class="col-md-4">
+              <label for="classsize" class="form-label">Class size</label>
+              <input
+                type="text"
+                class="form-control"
+                id="classsize"
+                placeholder="42"
+              />
+            </div>
+      
+            <div class="col-md-12">
+              <label for="headteacher" class="form-label">Head teacher</label>
+              <input
+                type="text"
+                class="form-control"
+                id="headteacher"
+                placeholder="Nguyễn Hữu Phúc"
+              />
+            </div>
+            <button class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Create</button>
+          </form>
+
+          <hr>
+
+          <table id="example" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+            <thead>
+                <tr>
+                    <th>Grade</th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Head teacher</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10</td>
+                    <td class="class">10.2</td>
+                    <td>42</td>
+                    <td>Trần Văn Toàn</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td class="class">11.4</td>
+                  <td>40</td>
+                  <td>Thái Thị Minh Anh</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td class="class">12.5</td>
+                  <td>37</td>
+                  <td>Huấn Hoa Hồng</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Modal -->
+        <div class="modal fade " id="editScoreModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">ID: </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container d-flex justify-content-around gap-1">
+                          <div class="col-4">
+                              <label for="modal_grade" class="form-label">Grade</label>
+                              <input
+                                  type="text"
+                                  class="form-control"
+                                  id="modal_grade"
+                                  placeholder="10"/>
+                          </div>
+                          <div class="col-4">
+                              <label for="modal_name" class="form-label">Name</label>
+                              <input
+                                  type="text"
+                                  class="form-control"
+                                  id="modal_name"
+                                  placeholder="10.3"/>
+                          </div>
+                          <div class="col-4">
+                              <label for="modal_size" class="form-label">Size</label>
+                              <input
+                                  type="text"
+                                  class="form-control"
+                                  id="modal_size"
+                                  placeholder="30"/>
+                          </div>
+                      </div>
+                      <div class="container">
+                        <div class="col-12">
+                          <label for="modal_headteacher" class="form-label">Head teacher</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="modal_headteacher"
+                                placeholder="Lê Thành Nam"/>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save changes</button>
+                      <button type="button" class="btn" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Delete</button>
+                    </div>
+              </div>
+          </div>
+      </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable(); 
+            // when table-row is clicked
+            $("#example tbody tr").click(function () {
+                
+                var item = $(this).closest("tr")  
+                       .find(".class")    
+                       .text();
+                
+                $(".modal-title").text("Class: " + item);
+                     
+                $("#editScoreModal").modal("show");
+            });
+        });
+    </script>

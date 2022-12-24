@@ -1,0 +1,136 @@
+<div class="main-container d-flex">
+                {{>adsidebar}}
+
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Manage Rules</div>
+                <table id="table_rules" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                <thead>
+                    <tr>
+                        <th style="width:50%;" class="text-center">Rule</th>
+                        <th class="text-center">Condition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tuổi tối thiểu</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="minOld"
+                            placeholder="15"
+                            class="form-control" disabled="disabled"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tuổi tối đa</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="maxOld"
+                            placeholder="25"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sĩ số</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="size"
+                            placeholder="50"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Số lượng lớp</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="totalClass"
+                            placeholder="100"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Số lượng môn học</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="totalSubject"
+                            placeholder="25"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Điểm chuẩn đạt</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="passScore"
+                            placeholder="25"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Môn học mới</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="newSubject"
+                            placeholder="Nhập môn học mới"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Đổi tên môn <select name="subjects" id="subjects" class="mx-5 col-2">
+                            <option value="Toán">Toán</option>
+                            <option value="Văn">Văn</option>
+                        </select> thành môn</td>
+                        <td>
+                            <input
+                            type="text"
+                            id="changeSubject"
+                            placeholder="Nhập môn học mới"
+                            class="form-control" disabled/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="container d-flex justify-content-center gap-5">
+                <button id="btn_edit" class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Edit</button>
+                <button id="btn_save" class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#btn_edit").click(function(){
+                $("#minOld").prop("disabled", false).focus();
+                $("#maxOld").prop("disabled", false);
+                $("#size").prop("disabled", false);
+                $("#totalClass").prop("disabled", false);
+                $("#totalSubject").prop("disabled", false);
+                $("#passScore").prop("disabled", false);
+                $("#newSubject").prop("disabled", false);
+                $("#totalClass").prop("disabled", false);
+                $("#changeSubject").prop("disabled", false);
+            })
+
+            // BE set cho nút Save
+            $("#btn_save").click(function(){
+                // TODO: send input to server
+
+                $("#minOld").prop("disabled", true);
+                $("#maxOld").prop("disabled", true);
+                $("#size").prop("disabled", true);
+                $("#totalClass").prop("disabled", true);
+                $("#totalSubject").prop("disabled", true);
+                $("#passScore").prop("disabled", true);
+                $("#newSubject").prop("disabled", true);
+                $("#totalClass").prop("disabled", true);
+                $("#changeSubject").prop("disabled", true);
+            })
+        })
+    </script>

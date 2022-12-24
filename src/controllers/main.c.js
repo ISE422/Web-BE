@@ -6,7 +6,9 @@ const hashLength = 64;
 
 module.exports = {
   renderHomePage: (req, res, next) => {
-    res.redirect('/infomation')
+    console.log(req.session);
+    req.session.role=='admin'? res.render('home') : res.redirect('/infomation')
+    
   },
   renderLoginPage: (req, res, next) => {
     res.render("login");
@@ -282,4 +284,25 @@ module.exports = {
       next(err)
     }
   },
+
+renderCreateAcc: (req,res,next)=>{
+  res.render('createacc')
+},
+renderCreateClass: (req,res,next)=>{
+  res.render('createclass')
+
+},
+renderManageTeacher: (req,res,next)=>{
+  res.render('manageteacher')
+
+},
+renderManageStudent: (req,res,next)=>{
+  res.render('managestudent')
+
+},
+renderManageRule: (req,res,next)=>{
+  res.render('managerule')
+
+},
+
 };

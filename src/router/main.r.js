@@ -37,9 +37,25 @@ router.get('/createreport',  authHaveUser, authRole('teacher'), mainC.renderCrea
 
 // end code for teachers
 
-// router.get('/addacc', authHaveUser, authRole('admin'), mainC.renderAddAccount)
+// code for admin
+router.get('/createacc',  authHaveUser, authRole('admin'), 
+mainC.renderCreateAcc)
+
+router.get('/createclass',  authHaveUser, authRole('admin'), 
+mainC.renderCreateClass)
+
+router.get('/manageteacher',  authHaveUser, authRole('admin'), 
+mainC.renderManageTeacher)
+
+router.get('/managestudent',  authHaveUser, authRole('admin'), 
+mainC.renderManageStudent)
+
+router.get('/managerule',  authHaveUser, authRole('admin'), 
+mainC.renderManageRule)
 
 
+
+// end code for admin
 
 
 // router.get('/test', async (req,res,next)=>{
