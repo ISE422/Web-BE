@@ -4,7 +4,6 @@ const router = express.Router();
 const student = require("../controllers/student");
 const { authAdmin, authHaveUser, authRole } = require("../middleware/auth");
 const auth = require("../middleware/auth");
-const { getClient } = require("../config/postgres");
 
 router.get(
   "/student-infomation",
@@ -34,8 +33,12 @@ router.get(
   student.getTopStudent
 );
 
+// router.get("/test", student.test);
+
 router.post("/edit-student-infomation", student.postInfoStudent);
 
 router.post("/student-scores", student.postScoresStudent);
+
+router.post("/student-leaderboard", student.postTopStudent);
 
 module.exports = router;

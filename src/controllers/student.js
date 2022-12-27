@@ -104,11 +104,62 @@ exports.postScoresStudent = async function (req, res, next) {
 };
 
 exports.getTopStudent = async function (req, res, next) {
+  let topRanks = req.session.topRanks;
+  if (!topRanks) {
+    topRanks = null;
+  } else {
+    let i = 1;
+
+    topRanks.map((info) => {
+      info.rank = i;
+      i++;
+    });
+  }
+
   try {
     res.render("leaderboard-student", {
       pageTitle: "Top Student",
+      topRanksArr: topRanks,
     });
   } catch (error) {
     next(error);
   }
+};
+
+exports.postTopStudent = async function (req, res, next) {
+  const info = req.body;
+  let topRank;
+  let arrS = [];
+  if (info.subjects == "all" && info.semester == "Hoc ki 1") {
+    topRank = await studentM.getTopRankAllSemester1Year(info);
+    topRank.map((obj) => {
+      obj.diem = obj.DiemTongKetHocKy1;
+      obj.info = info;
+      arrS.push(obj);
+    });
+  }
+  if (info.subjects == "all" && info.semester == "Hoc ki 2") {
+    topRank = await studentM.getTopRankAllSemester2Year(info);
+    topRank.map((obj) => {
+      obj.diem = obj.DiemTongKetHocKy2;
+      obj.info = info;
+      arrS.push(obj);
+    });
+  }
+  if (info.subjects == "all" && info.semester == "Cả năm học") {
+    topRank = await studentM.getTopRankAllYear(info);
+    topRank.map((obj) => {
+      obj.diem = obj.DiemTongKetNamHoc;
+      obj.info = info;
+      arrS.push(obj);
+    });
+  }
+  topRank = await studentM.getTopRankSubSemesterYear(info);
+  topRank.map((obj) => {
+    obj.diem = obj.DiemTKMON;
+    obj.info = info;
+    arrS.push(obj);
+  });
+  req.session.topRanks = arrS;
+  res.redirect("/student-leaderboard");
 };
