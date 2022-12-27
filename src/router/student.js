@@ -13,8 +13,6 @@ router.get(
   student.getInfoStudent
 );
 
-router.post("/edit-student-infomation", student.postInfoStudent);
-
 router.get(
   "/student-scores",
   authHaveUser,
@@ -23,10 +21,21 @@ router.get(
 );
 
 router.get(
+  "/edit-student-infomation",
+  authHaveUser,
+  authRole("student"),
+  student.getEditInfoStudent
+);
+
+router.get(
   "/student-leaderboard",
   authHaveUser,
   authRole("student"),
   student.getTopStudent
 );
+
+router.post("/edit-student-infomation", student.postInfoStudent);
+
+router.post("/student-scores", student.postScoresStudent);
 
 module.exports = router;

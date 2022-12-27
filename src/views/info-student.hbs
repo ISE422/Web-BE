@@ -10,16 +10,126 @@
        </div>
   {{/if}}
   {{#if errorMessage}}
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-warning" role="alert">
           <h3 class="text-center fw-bold">
               {{errorMessage}}
           </h3>
         </div>
   {{/if}}
+ 
           <div class="col-md-12 fs-2 p-2 text-white text-center rounded" style="background: #f8c4d9;">Profile</div>
-
-          <form class="row g-3 mx-3 my-1" action="/edit-student-infomation" method="POST">
+      {{#if editing}}
+                     <form class="row g-3 mx-3 my-1" action="/edit-student-infomation" method="POST">
+            <div class="col-md-12">
+              <label for="ID" class="form-label">ID</label>
+              <input
+                type="text"
+                class="form-control"
+                name="ID"
+                id="ID"
+                value="{{obj.maHS}}"
+                disabled
+              />
+            </div>
+                    <div class="col-md-12">
+              <label for="IDC" class="form-label">Class</label>
+              <input
+                type="text"
+                class="form-control"
+                name="IDC"
+                id="IDC"
+                value="{{obj.maLop}}"
+                disabled
+              />
+            </div>
             
+            <div class="col-md-12">
+              <label for="inputName" class="form-label">Name</label>
+              <input
+                type="firstName"
+                class="form-control"
+                id="inputName"
+                value="{{obj.hoTen}}"
+                name="Name"
+                
+              />
+            </div>
+      
+            <div class="col-md-6">
+              <label for="inputBirthday" class="form-label">Your Birthday</label>
+              <input
+                type="birthday"
+                class="form-control"
+                id="inputBirthday"
+                value="{{obj.ngaySinh}}"
+                name="Birthday"
+                
+              />
+            </div>
+      
+            <div class="col-md-1"></div>
+
+      
+            <div class="col-md-auto">
+              <label for="inputGender" class="form-label">Gender</label>
+              <div class="form-check">
+                <input class="form-check-input" 
+                type="radio" name="genderRad" id="maleRadio" 
+                value="Nam"
+                {{#if obj.ismale}}
+                checked
+                {{/if}}
+                >
+                <label class="form-check-label" for="maleRadio">
+                  Male
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" 
+                type="radio" name="genderRad" id="femaleRadio" 
+                value="Nu"
+                {{#if obj.isfemale}}
+                checked
+                {{/if}}
+                >
+                <label class="form-check-label" for="femaleRadio">
+                  Female
+                </label>
+              </div>
+            </div>
+           
+            <div class="col-md-12">
+              <label for="inputAddress" class="form-label">Address</label>
+              <input
+                type="text"
+                name="Address"
+                class="form-control"
+                id="inputAddress"
+                value="{{obj.diaChi}}"
+              />
+            </div>
+      
+            <div class="col-md-12">
+              <label for="inputEmail" class="form-label">Email</label>
+              <input
+                type="text"
+                name="Email"
+                class="form-control"
+                id="inputEmail"
+               value="{{obj.email}}" 
+              />
+            </div>
+      
+            <div class="col-10"></div>
+                <div class="container d-flex justify-content-center gap-1">
+            <div class="col-10"></div>
+            <button id="btn_cancel" class="btn" style="background: #f8c4d9;" type="button"><a href="/student-infomation" style="text-decoration:none ;" class="text-dark">Back</a></button>
+            <button id="btn_save" class="btn" style="background: #f8c4d9;" type="submit">Save</button>
+          </div>
+            <input type="hidden" value="{{obj.maHS}}" name="ID">
+          </form >
+          {{else}}
+            <form class="row g-3 mx-3 my-1">
             <div class="col-md-12">
               <label for="ID" class="form-label">ID</label>
               <input
@@ -125,34 +235,19 @@
             <div class="col-10"></div>
                 <div class="container d-flex justify-content-center gap-1">
             <div class="col-10"></div>
-            <button id="btn_edit" class="btn" style="background: #f8c4d9;" type="button">Edit</button>
-            <button id="btn_save" class="btn" style="background: #f8c4d9;" type="submit">Save</button>
+           <button id="btn_edit" class="btn" style="background: #f8c4d9; width: 10%" type="button"> <a href="/edit-student-infomation?edit=true" style="text-decoration:none ;" class="text-dark">Edit</a></button>
           </div>
-            <input type="hidden" value="{{obj.maHS}}" name="ID">
           </form>
-      
+        {{/if}}
+        
         </div>
+
     </div>
 <h1>{{obj.gender}}</h1>
 <script>
 
 
-      $(document).ready(function(){
-        
-            $("#btn_edit").click(function(){
-                $("#inputName").prop("disabled", false).focus();
-                $("#inputBirthday").prop("disabled", false);
-                $("#maleRadio").prop("disabled", false);
-                $("#femaleRadio").prop("disabled", false);
-                $("#inputAddress").prop("disabled", false);
-                $("#inputEmail").prop("disabled", false);
-                $("#totalClass").prop("disabled", false);
-                $("#changeSubject").prop("disabled", false);
-            })
 
-            // BE set cho nút Save
-     
-        })
     </script>
        {{!-- $("#btn_save").click(function(){
                 // TODO: send input to server
@@ -170,3 +265,21 @@
                   console.log($("input[name=genderRad]").val())
       $("input[name=genderRad]").val('female')
       console.log($("input[name=genderRad]").val()) --}}
+
+
+            {{!-- $(document).ready(function(){
+        
+            $("#btn_edit").click(function(){
+                $("#inputName").prop("disabled", false).focus();
+                $("#inputBirthday").prop("disabled", false);
+                $("#maleRadio").prop("disabled", false);
+                $("#femaleRadio").prop("disabled", false);
+                $("#inputAddress").prop("disabled", false);
+                $("#inputEmail").prop("disabled", false);
+                $("#totalClass").prop("disabled", false);
+                $("#changeSubject").prop("disabled", false);
+            })
+
+            // BE set cho nút Save
+     
+        }) --}}

@@ -3,67 +3,58 @@
 
               <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
             <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Score</div>
-            <form action="" class="container">
+            <form action="/student-scores" class="container" method="post">
                 <div class="row justify-content-around">
                     <label class="col-1" for="semester">Semester:</label>
                     <select class="col-1" name="semester" id="semester">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option value="Hoc ki 1">1</option>
+                        <option value="Hoc ki 2">2</option>
+                        <option value="all">All</option>
                     </select>
                     <div class="col-3"></div>
                     <label class="col-1" for="year">Year:</label>
                     <select class="col-1" name="year" id="year">
-                        <option value="1">2021</option>
-                        <option value="2">2022</option>
+                        <option value="2019-2020">2020</option>
+                        <option value="2020-2021">2021</option>
+                        <option value="2021-2022">2022</option>
                     </select>
                 </div>
                 <div class="row my-5 justify-content-center">   
-                    <button class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Show</button>
+                    <button class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" type="submit">Show</button>
                 </div>
             </form>
+           
             <table id="example" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
                 <thead>
                     <tr>
                         <th>Subject</th>
-                        <th>Semester</th>
                         <th>15-min</th>
                         <th>45-min</th>
                         <th>Semester Final Test</th>
                         <th>Average</th>
+                        <th>Semester</th>
+                        <th>Year School</th>
                     </tr>
                 </thead>
                 <tbody>
+                {{#each scoresArr}}
                     <tr>
-                        <td>Toán</td>
-                        <td>1</td>
-                        <td>8</td>
-                        <td>9</td>
-                        <td>10</td>
-                        <td>x</td>
+                        <td>{{this.tenMH}}</td>
+                        <td>{{this.diem15}}</td>
+                        <td>{{this.diem45}}</td>
+                        <td>{{this.diemHK}}</td>
+                        <td>{{this.diemtk}}</td>
+                        <td>{{this.tenHK}}</td>
+                        <td>{{this.tenNH}}</td>
                     </tr>
-                    <tr>
-                        <td>Văn</td>
-                        <td>1</td>
-                        <td>8</td>
-                        <td>7</td>
-                        <td>10</td>
-                        <td>x</td>
-                    </tr>
-                    <tr>
-                        <td>Anh</td>
-                        <td>2</td>
-                        <td>9</td>
-                        <td>9</td>
-                        <td>7</td>
-                        <td>x</td>
-                    </tr>
+                {{/each}}
                 </tbody>
             </table>
+            
         </div>
 </div>
 <script>
-
-    </script>
-{{!--       $(document).ready(function () {
+          $(document).ready(function () {
             $('#example').DataTable();
-        }); --}}
+        });
+    </script>
