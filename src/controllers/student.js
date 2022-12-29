@@ -4,6 +4,7 @@ exports.getInfoStudent = async function (req, res, next) {
   try {
     const un = req.session.uid;
     const info = await studentM.getInfo(un);
+
     info.rows[0].gioiTinh
       ? (info.rows[0].isfemale = true)
       : (info.rows[0].ismale = true);
@@ -96,6 +97,7 @@ exports.postScoresStudent = async function (req, res, next) {
     req.session.scores = scores.rows;
   } else {
     const maHKNH = await studentM.getMaHKNH(info);
+
     const scores = await studentM.getScores(un, maHKNH.rows[0].maHKNH);
 
     req.session.scores = scores.rows;
@@ -130,36 +132,79 @@ exports.postTopStudent = async function (req, res, next) {
   const info = req.body;
   let topRank;
   let arrS = [];
-  if (info.subjects == "all" && info.semester == "Hoc ki 1") {
-    topRank = await studentM.getTopRankAllSemester1Year(info);
-    topRank.map((obj) => {
-      obj.diem = obj.DiemTongKetHocKy1;
-      obj.info = info;
-      arrS.push(obj);
-    });
-  }
-  if (info.subjects == "all" && info.semester == "Hoc ki 2") {
-    topRank = await studentM.getTopRankAllSemester2Year(info);
-    topRank.map((obj) => {
-      obj.diem = obj.DiemTongKetHocKy2;
-      obj.info = info;
-      arrS.push(obj);
-    });
-  }
+  let tamp = 0;
+  // Điểm tổng kết theo năm
   if (info.subjects == "all" && info.semester == "Cả năm học") {
-    topRank = await studentM.getTopRankAllYear(info);
+    topRank = await studentM.getTopRankYear(info);
+    let diem;
     topRank.map((obj) => {
-      obj.diem = obj.DiemTongKetNamHoc;
+      // console.log(obj);
+      if (tamp == 0) {
+        diem = 0;
+      }
+      diem += obj.DiemTKMON;
+      tamp++;
+      if (tamp == 18) {
+        obj.diem = (diem / 18).toFixed(1);
+        obj.info = info;
+        arrS.push(obj);
+        tamp = 0;
+      }
+    });
+  } else if (info.subjects == "all" && info.semester != "Cả năm học") {
+    // Điểm tổng kết theo năm và theo học kì
+    topRank = await studentM.getTopRankSemesterYear(info);
+    let diem;
+    topRank.map((obj) => {
+      // console.log(obj);
+      if (tamp == 0) {
+        diem = 0;
+      }
+      diem += obj.DiemTKMON;
+      tamp++;
+      if (tamp == 9) {
+        obj.diem = (diem / 9).toFixed(1);
+        obj.info = info;
+        arrS.push(obj);
+        tamp = 0;
+      }
+    });
+  } else if (info.subjects != "all" && info.semester != "Cả năm học") {
+    // Điểm theo môn học theo từng học kỳ
+    topRank = await studentM.getTopRankSubSemesterYear(info);
+    topRank.map((obj) => {
+      obj.diem = obj.DiemTKMON;
       obj.info = info;
       arrS.push(obj);
     });
+  } else {
+    // Điểm theo môn học theo cả năm
+    topRank = await studentM.getTopRankSubYear(info);
+    let diem;
+    console.log(topRank);
+    topRank.map((obj) => {
+      if (tamp == 0) {
+        diem = 0;
+      }
+      diem += obj.DiemTKMON;
+      tamp++;
+      if (tamp == 2) {
+        obj.diem = (diem / 2).toFixed(1);
+        obj.info = info;
+        arrS.push(obj);
+        tamp = 0;
+      }
+    });
   }
-  topRank = await studentM.getTopRankSubSemesterYear(info);
-  topRank.map((obj) => {
-    obj.diem = obj.DiemTKMON;
-    obj.info = info;
-    arrS.push(obj);
-  });
-  req.session.topRanks = arrS;
+  // Sắp xếp theo thứ tự giảm dần
+  arrS.sort((a, b) => b.diem - a.diem);
+  // Limit ranking
+  const rankingArr = arrS.slice(0, Number(info.limit));
+
+  req.session.topRanks = rankingArr;
   res.redirect("/student-leaderboard");
+};
+
+exports.test = async function (req, res, next) {
+  const test = await studentM.updateDiemTKMON();
 };

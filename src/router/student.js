@@ -33,7 +33,7 @@ router.get(
   student.getTopStudent
 );
 
-// router.get("/test", student.test);
+router.get("/test", student.test);
 
 router.post("/edit-student-infomation", student.postInfoStudent);
 

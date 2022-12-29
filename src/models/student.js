@@ -3,7 +3,7 @@ const { getClient } = require("../config/postgres");
 exports.getInfo = async function (username) {
   const client = await getClient();
   const rs = await client.query(
-    'select * from public."HocSinh"where"maHS" = $1',
+    'select hs.*, l."tenLop" from public."HocSinh" as hs, public."Lop" as l where hs."maHS" = $1 and hs."maLop" = l."maLop" ',
     [username]
   );
   return rs;
@@ -84,29 +84,56 @@ exports.updateDiemTKMON = async function () {
   });
 };
 
-exports.getTopRankAllSemester1Year = async function (info) {
+// exports.getTopRankAllSemester1Year = async function (info) {
+//   const client = await getClient();
+//   const rs = await client.query(
+//     'SELECT TK."maHS",TK."DiemTongKetHocKy1", HS."hoTen" FROM PUBLIC."TongKet" AS TK, PUBLIC."HocKiNamHoc" AS HK, PUBLIC."HocSinh" AS HS WHERE TK."NamHoc" = HK."tenNH" AND HS."maHS" = TK."maHS"  AND TK."NamHoc" = $1 AND HK."tenHK" = $2 ORDER BY TK."DiemTongKetHocKy1" DESC LIMIT $3',
+//     [info.year, info.semester, info.limit]
+//   );
+//   return rs.rows;
+// };
+
+// exports.getTopRankAllSemester2Year = async function (info) {
+//   const client = await getClient();
+//   const rs = await client.query(
+//     'SELECT TK."maHS",TK."DiemTongKetHocKy2", HS."hoTen" FROM PUBLIC."TongKet" AS TK, PUBLIC."HocKiNamHoc" AS HK, PUBLIC."HocSinh" AS HS WHERE TK."NamHoc" = HK."tenNH" AND HS."maHS" = TK."maHS"  AND TK."NamHoc" = $1 AND HK."tenHK" = $2 ORDER BY TK."DiemTongKetHocKy2" DESC LIMIT $3',
+//     [info.year, info.semester, info.limit]
+//   );
+//   return rs.rows;
+// };
+
+// exports.getTopRankAllYear = async function (info) {
+//   const client = await getClient();
+//   const rs = await client.query(
+//     'SELECT TK."maHS",TK."DiemTongKetNamHoc", HS."hoTen" FROM PUBLIC."TongKet" AS TK, PUBLIC."HocSinh" AS HS WHERE  HS."maHS" = TK."maHS"  AND TK."NamHoc" = $1 ORDER BY TK."DiemTongKetNamHoc" DESC LIMIT $2',
+//     [info.year, info.limit]
+//   );
+//   return rs.rows;
+// };
+
+// exports.getTopRankSubSemesterYear = async function (info) {
+//   const client = await getClient();
+//   const rs = await client.query(
+//     'SELECT KQ."maHS", HS."hoTen", KQ."DiemTKMON" FROM PUBLIC."KetQua" AS KQ, PUBLIC."HocSinh" AS HS, PUBLIC."HocKiNamHoc" AS HK WHERE KQ."maHS" = HS."maHS" AND KQ."maMH" = $1 AND KQ."maHKNH" = HK."maHKNH" and HK."tenHK" = $2 and HK."tenNH" = $3 ORDER BY "DiemTKMON" DESC LIMIT $4',
+//     [info.subjects, info.semester, info.year, info.limit]
+//   );
+//   return rs.rows;
+// };
+
+exports.getTopRankSemesterYear = async function (info) {
   const client = await getClient();
   const rs = await client.query(
-    'SELECT TK."maHS",TK."DiemTongKetHocKy1", HS."hoTen" FROM PUBLIC."TongKet" AS TK, PUBLIC."HocKiNamHoc" AS HK, PUBLIC."HocSinh" AS HS WHERE TK."NamHoc" = HK."tenNH" AND HS."maHS" = TK."maHS"  AND TK."NamHoc" = $1 AND HK."tenHK" = $2 ORDER BY TK."DiemTongKetHocKy1" DESC LIMIT $3',
-    [info.year, info.semester, info.limit]
+    'SELECT hs."hoTen", kh."tenKhoi", kq.* FROM PUBLIC."HocSinh" AS hs, PUBLIC."Lop" AS l , PUBLIC."Khoi" AS kh, PUBLIC."KetQua" AS kq, PUBLIC."HocKiNamHoc" AS hk WHERE kh."maKhoi" = l."maKhoi" AND l."maLop" = hs."maLop" AND kh."maKhoi" = $1 AND kq."maHS" = hs."maHS" AND kq."maHKNH" = hk."maHKNH" AND hk."tenHK" = $2 AND hk."tenNH" = $3 ORDER BY "maHS" ',
+    [info.grade, info.semester, info.year]
   );
   return rs.rows;
 };
 
-exports.getTopRankAllSemester2Year = async function (info) {
+exports.getTopRankYear = async function (info) {
   const client = await getClient();
   const rs = await client.query(
-    'SELECT TK."maHS",TK."DiemTongKetHocKy2", HS."hoTen" FROM PUBLIC."TongKet" AS TK, PUBLIC."HocKiNamHoc" AS HK, PUBLIC."HocSinh" AS HS WHERE TK."NamHoc" = HK."tenNH" AND HS."maHS" = TK."maHS"  AND TK."NamHoc" = $1 AND HK."tenHK" = $2 ORDER BY TK."DiemTongKetHocKy2" DESC LIMIT $3',
-    [info.year, info.semester, info.limit]
-  );
-  return rs.rows;
-};
-
-exports.getTopRankAllYear = async function (info) {
-  const client = await getClient();
-  const rs = await client.query(
-    'SELECT TK."maHS",TK."DiemTongKetNamHoc", HS."hoTen" FROM PUBLIC."TongKet" AS TK, PUBLIC."HocSinh" AS HS WHERE  HS."maHS" = TK."maHS"  AND TK."NamHoc" = $1 ORDER BY TK."DiemTongKetNamHoc" DESC LIMIT $2',
-    [info.year, info.limit]
+    'SELECT hs."hoTen", kh."tenKhoi", kq.* FROM PUBLIC."HocSinh" AS hs, PUBLIC."Lop" AS l , PUBLIC."Khoi" AS kh, PUBLIC."KetQua" AS kq, PUBLIC."HocKiNamHoc" AS hk WHERE kh."maKhoi" = l."maKhoi" AND l."maLop" = hs."maLop" AND kh."maKhoi" = $1 AND kq."maHS" = hs."maHS" AND kq."maHKNH" = hk."maHKNH" AND hk."tenNH" = $2 ORDER BY "maHS" ',
+    [info.grade, info.year]
   );
   return rs.rows;
 };
@@ -114,8 +141,17 @@ exports.getTopRankAllYear = async function (info) {
 exports.getTopRankSubSemesterYear = async function (info) {
   const client = await getClient();
   const rs = await client.query(
-    'SELECT KQ."maHS", HS."hoTen", KQ."DiemTKMON" FROM PUBLIC."KetQua" AS KQ, PUBLIC."HocSinh" AS HS, PUBLIC."HocKiNamHoc" AS HK WHERE KQ."maHS" = HS."maHS" AND KQ."maMH" = $1 AND KQ."maHKNH" = HK."maHKNH" and HK."tenHK" = $2 and HK."tenNH" = $3 ORDER BY "DiemTKMON" DESC LIMIT $4',
-    [info.subjects, info.semester, info.year, info.limit]
+    'SELECT KQ."maHS", HS."hoTen", KQ."DiemTKMON", kh."tenKhoi" FROM PUBLIC."KetQua" AS KQ, PUBLIC."HocSinh" AS HS, PUBLIC."HocKiNamHoc" AS HK , PUBLIC."Lop" AS l, PUBLIC."Khoi" AS kh WHERE kh."maKhoi" = l."maKhoi" AND l."maLop" = hs."maLop" AND kh."maKhoi" = $5 AND KQ."maHS" = HS."maHS" AND KQ."maMH" = $1 AND KQ."maHKNH" = HK."maHKNH" and HK."tenHK" = $2 and HK."tenNH" = $3 ORDER BY "DiemTKMON" DESC LIMIT $4',
+    [info.subjects, info.semester, info.year, info.limit, info.grade]
+  );
+  return rs.rows;
+};
+
+exports.getTopRankSubYear = async function (info) {
+  const client = await getClient();
+  const rs = await client.query(
+    'SELECT hs."hoTen", kh."tenKhoi", kq.* FROM PUBLIC."HocSinh" AS hs, PUBLIC."Lop" AS l , PUBLIC."Khoi" AS kh, PUBLIC."KetQua" AS kq, PUBLIC."HocKiNamHoc" AS hk WHERE kh."maKhoi" = l."maKhoi" AND l."maLop" = hs."maLop" AND kh."maKhoi" = $1 AND kq."maHS" = hs."maHS" AND kq."maHKNH" = hk."maHKNH" AND hk."tenNH" = $2 AND kq."maMH" = $3 ORDER BY "maHS" ',
+    [info.grade, info.year, info.subjects]
   );
   return rs.rows;
 };

@@ -21,15 +21,15 @@
 
                     <label class="col-1" for="grade">Grade:</label>
                     <select class="col-1" name="grade" id="grade">
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
+                        <option value="K10">10</option>
+                        <option value="K11">11</option>
+                        <option value="K12">12</option>
                     </select>
         
                     <label class="col-1" for="semester">Semester:</label>
                     <select class="col-1" name="semester" id="semester">
-                        <option value="Hoc ki 1">1</option>
-                        <option value="Hoc ki 2">2</option>
+                        <option value="Học kỳ 1">1</option>
+                        <option value="Học kỳ 2">2</option>
                         <option value="Cả năm học">Cả năm</option>
                     </select>
 
@@ -48,7 +48,7 @@
                     </select>
                 </div> 
                 <div class="row my-5 justify-content-center gap-5">   
-                    <button class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" type="submit">View Top Students</button>
+                    <button class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" type="submit">View Top-Ranking Student </button>
 
                 </div>
             </form>
@@ -69,7 +69,7 @@
                         <td>{{this.rank}}</td>
                         <td>{{this.hoTen}}</td>
                         <td>{{this.diem}}</td>
-                        <td>Chưa có db</td>
+                        <td>{{this.tenKhoi}}</td>
                         <td>{{this.info.semester}}</td>
                         <td>{{this.info.year}}</td>
                     </tr>
