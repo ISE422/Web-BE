@@ -284,25 +284,4 @@ module.exports = {
       next(err)
     }
   },
-
-renderCreateAcc: (req,res,next)=>{
-  res.render('createacc')
-},
-renderCreateClass: (req,res,next)=>{
-  res.render('createclass')
-
-},
-renderManageTeacher: (req,res,next)=>{
-  res.render('manageteacher')
-
-},
-renderManageStudent: (req,res,next)=>{
-  res.render('managestudent')
-
-},
-renderManageRule: (req,res,next)=>{
-  res.render('managerule')
-
-},
-
 };

@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const morgan = require("morgan");
 const path = require("path");
 const myRouter = require("./router/main.r.js");
+const adminRoute = require("./router/admin.r")
+
 require('dotenv').config()
 
 const app = express();
@@ -25,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", myRouter);
+app.use(adminRoute)
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode | 500;
