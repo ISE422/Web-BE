@@ -7,7 +7,7 @@ const hashLength = 64;
 module.exports = {
   renderHomePage: (req, res, next) => {
     console.log(req.session);
-    req.session.role=='admin'? res.render('home') : res.redirect('/infomation')
+    req.session.role=='admin'? res.redirect("/createacc") : res.redirect('/infomation')
     
   },
   renderLoginPage: (req, res, next) => {
