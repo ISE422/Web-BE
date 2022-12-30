@@ -1,0 +1,103 @@
+DROP TABLE IF EXISTS "HocKiNamHoc";
+CREATE TABLE "HocKiNamHoc" (
+  "maHKNH" varchar(20) NOT NULL,
+  "tenHK" varchar(100),
+  "tenNH" varchar(100),
+  PRIMARY KEY ("maHKNH")
+)
+;
+
+DROP TABLE IF EXISTS "KetQua";
+CREATE TABLE "KetQua" (
+  "maKQ" varchar(20) NOT NULL,
+  "maMH" varchar(20),
+  "maHKNH" varchar(20),
+"maHS" varchar(20),
+"diem15" FLOAT,
+"diem45" FLOAT,
+"diemHK" FLOAT,
+  PRIMARY KEY ("maKQ")
+)
+;
+
+DROP TABLE IF EXISTS "Khoi";
+CREATE TABLE "Khoi" (
+  "maKhoi" varchar(20) NOT NULL,
+  "tenKhoi" varchar(100),
+  PRIMARY KEY ("maKhoi")
+)
+;
+
+DROP TABLE IF EXISTS "PhanCong";
+CREATE TABLE "PhanCong" (
+  "maPhanCong" varchar(20) NOT NULL,
+  "maGV" varchar(20),
+"maLop" varchar(20),
+  PRIMARY KEY ("maPhanCong")
+)
+;
+
+DROP TABLE IF EXISTS "HocSinh";
+CREATE TABLE "HocSinh" (
+  "maHS" varchar(20) NOT NULL,
+  "maLop" varchar(20),
+  "hoTen" varchar(100),
+  "gioiTinh" boolean,
+  "email" varchar(255),
+  "ngaySinh" varchar(50),
+"diaChi" text,
+  PRIMARY KEY ("maHS")
+)
+;
+
+DROP TABLE IF EXISTS "Lop";
+CREATE TABLE "Lop" (
+  "maLop" varchar(20) NOT NULL,
+  "maKhoi" varchar(20),
+  "tenLop" varchar(100),
+  "maGVCN" varchar(20),
+  "siSo" int4,
+  "siSoToiDa" int4,
+  PRIMARY KEY ("maLop")
+)
+;
+
+DROP TABLE IF EXISTS "MonHoc";
+CREATE TABLE "MonHoc" (
+  "maMH" varchar(20) NOT NULL,
+  "tenMH" varchar(100),
+  "diemChuan" float,
+  PRIMARY KEY ("maMH")
+)
+;
+
+DROP TABLE IF EXISTS "GiaoVien";
+CREATE TABLE "GiaoVien" (
+  "maGV" varchar(20) NOT NULL,
+  "maMH" varchar(20),
+  "hoTen" varchar(100),
+  "gioiTinh" boolean,
+  "email" varchar(255),
+  "ngaySinh" varchar(50),
+"diaChi" text,
+  PRIMARY KEY ("maGV")
+)
+;
+
+DROP TABLE IF EXISTS "QuiDinh";
+CREATE TABLE "QuiDinh" (
+  "maQD" varchar(20) NOT NULL,
+  "tenQD" varchar(100),
+  "giaTri" float,
+  PRIMARY KEY ("maQD")
+)
+;
+
+DROP TABLE IF EXISTS "TaiKhoan";
+CREATE TABLE "TaiKhoan" (
+  "username" varchar(50) NOT NULL,
+  "password" varchar(255),
+  "type" int4,
+  PRIMARY KEY ("username")
+)
+;

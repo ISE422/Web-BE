@@ -1,0 +1,167 @@
+<div class="main-container d-flex">
+                {{>adsidebar}}
+
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-5" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Create Account</div>
+            {{#if hasError}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-danger">{{error}}</h5>
+          </div>
+          {{/if}}
+          {{#if hasMess}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-success">{{mess}}</h5>
+          </div>
+          {{/if}}
+            <form action="/createacc" method="post" class="container">
+                <div class="row justify-content-around">
+                    <label class="col-1" for="account">Account:</label>
+                    <select class="col-2" name="accountType" id="account">
+                        <option value="null">--Chọn--</option>
+                        <option value="student">Học sinh</option>
+                        <option value="teacher">Giáo viên</option>
+                    </select>
+
+                    <label id="subject_lb" class="col-1" for="subject">Subject:</label>
+                    <select class="col-1" name="subject" id="subject">
+                        {{#each subjs}}
+                          <option value="{{this.maMH}}">{{this.tenMH}}</option>
+                        {{/each}}
+                    </select>
+
+                    <label id="classteach_lb" class="col-1" for="classteach">Teaching:</label>
+                    <select class="col-1" name="classteach" id="classteach">
+                        {{#each classes}}
+                          <option value="{{this.maLop}}">{{this.tenLop}}</option>
+                        {{/each}}
+                    </select>
+        
+                    <label id="class_lb" class="col-1" for="classstudying">Studying:</label>
+                    <select class="col-1" name="classstudying" id="class">
+                      {{#each classes}}
+                          <option value="{{this.maLop}}">{{this.tenLop}}</option>
+                        {{/each}}
+                    </select>
+
+                    <div class="col-12"></div>
+
+                    <div class="col-md-12 mt-3">
+                        <label for="inputFirstName" class="form-label">Full Name</label>
+                        <input
+                          name="fullname"
+                          type="firstName"
+                          class="form-control"
+                          id="inputFirstName"
+                          placeholder="Lê Thành"
+                        />
+                      </div>
+                      
+                
+                      <div class="col-md-6 mt-2">
+                        <label for="inputBirthday" class="form-label">Your Birthday</label>
+                        <input
+                        name="birthday"
+                          type="date"
+                          class="form-control"
+                          id="inputBirthday"
+                          placeholder="04/03/2002"
+                        />
+                      </div>
+                
+                      <div class="col-md-1"></div>
+                
+                      <div class="col-md-5 mt-2">
+                        <label for="inputGender" class="form-label">Gender</label>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="genderRad" value="false" id="maleRadio" checked>
+                          <label class="form-check-label" for="maleRadio">
+                            Male
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="genderRad" value="true" id="femaleRadio">
+                          <label class="form-check-label" for="femaleRadio">
+                            Female
+                          </label>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-12">
+                        <label for="inputAddress" class="form-label">Address</label>
+                        <input
+                        name="address"
+                          type="text"
+                          class="form-control"
+                          id="inputAddress"
+                          placeholder="1234 Main St"
+                        />
+                      </div>
+                
+                      <div class="col-md-12">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input
+                        name="email"
+                          type="text"
+                          class="form-control"
+                          id="inputEmail"
+                          placeholder="abc@gmail.com"
+                        />
+                      </div>
+                    <div class="row my-5 justify-content-center">   
+                        <button type="submit" id="btn_create" class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+       $(document).ready(function () {
+            $("#subject_lb").hide();
+            $("#subject").hide();
+            $("#classteach_lb").hide();
+            $("#classteach").hide();
+            $("#class_lb").hide();
+            $("#class").hide();
+        
+            $("#btn_create").addClass('disabled');
+            
+
+            $("#account").change(function() {
+              var conceptName = $("#account").find(":selected").val();
+              if (conceptName == "student") {
+                  $("#subject_lb").hide();
+                  $("#subject").hide();
+                  $("#classteach_lb").hide();
+                  $("#classteach").hide();
+
+                  $("#class_lb").show();
+                  $("#class").show();
+
+                  $("#btn_create").removeClass('disabled');
+              }
+              if (conceptName == "teacher") {
+                  $("#subject_lb").show();
+                  $("#subject").show();
+                  $("#classteach_lb").show();
+                  $("#classteach").show();
+
+                  $("#class_lb").hide();
+                  $("#class").hide();
+
+                  $("#btn_create").removeClass('disabled');
+              }
+              if ($("#account").find(":selected").val() == "null"){
+                $("#subject_lb").hide();
+                $("#subject").hide();
+                $("#classteach_lb").hide();
+                $("#classteach").hide();
+                $("#class_lb").hide();
+                $("#class").hide();
+
+                $("#btn_create").addClass('disabled');
+              }
+            })
+        });
+    </script>

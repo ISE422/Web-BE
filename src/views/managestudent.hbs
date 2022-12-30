@@ -1,0 +1,145 @@
+<div class="main-container d-flex">
+    {{>adsidebar}}
+
+
+    <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+        <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4"
+            style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Manage Students</div>
+        {{#if hasError}}
+        <div class="col-md-12 p-2 text-center">
+            <h5 class=" text-danger">{{error}}</h5>
+        </div>
+        {{/if}}
+        {{#if hasMess}}
+        <div class="col-md-12 p-2 text-center">
+            <h5 class=" text-success">{{mess}}</h5>
+        </div>
+        {{/if}}
+        <table id="example" class="table table-striped rounded"
+            style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Class</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each allstus}}
+                <tr>
+                    <td class="id">{{this.maHS}}</td>
+                    <td class="fullname">{{this.hoTen}}</td>
+                    <td class="classname">{{this.tenLop}}</td>
+
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <!-- Modal -->
+        <div class="modal fade " id="editScoreModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ID: </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="/managestudent" method="post">
+
+                        <div class="modal-body">
+
+                            <div class="container d-flex justify-content-around gap-1">
+                                <div class="col-6">
+                                    <label for="modal_id" class="form-label">ID</label>
+                                    <input type="text" class="form-control" id="modal_id" name="studentid" hidden />
+                                </div>
+                                <div class="col-6">
+                                    <label for="modal_class" class="form-label">Class</label>
+                                    {{!-- <input type="text" class="form-control" id="modal_class" placeholder="10.3" />
+                                    --}}
+                                    <select class="form-control" name="classstu" id="classstu">
+                                        {{#each allClasses}}
+                                        <option class="datalop" value="{{this.maLop}}">{{this.tenLop}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="container">
+                                <div class="col-12">
+                                    <label for="modal_name" class="form-label">Name</label>
+                                    <input name="fullname" type="text" class="form-control" id="modal_name" disabled />
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button name="option" value="update" type="submit" class="btn"
+                                style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save
+                                changes</button>
+                            <button name="option" value="delete" type="submit" class="btn"
+                                style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Delete</button>
+                        </div>
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // when table-row is clicked
+        $("#example tbody tr").click(function () {
+
+            var item = $(this).closest("tr")
+                .find(".id")
+                .text();
+            var fullname = $(this).closest("tr")
+                .find(".fullname")
+                .text();
+           
+
+            $("#modal_id").val(item)
+
+            $("#modal_name").val(fullname)
+
+            
+
+
+            $(".modal-title").text("ID: " + item);
+
+            var classes = []
+            let arrclass = document.getElementsByClassName("datalop")
+            for (let i = 0; i < arrclass.length; i++) {
+                let obj = {}
+                obj.id = arrclass[i].value
+                obj.value = arrclass[i].text
+                classes.push(obj)
+            }
+            var classname = $(this).closest("tr")
+                .find(".classname")
+                .text();
+            let obj1 = classes.find(item => item.value === classname)
+
+            let id1 = ""
+            if (obj1) id1 = obj1.id
+            $("#classstu").val(id1)
+
+
+            $("#editScoreModal").modal("show");
+        });
+        $('#example').DataTable();
+
+    });
+</script>

@@ -5,8 +5,14 @@ const morgan = require("morgan");
 const path = require("path");
 const flash = require("connect-flash");
 const myRouter = require("./router/main.r.js");
+
+const adminRoute = require("./router/admin.r")
+const teacherRoute = require("./router/teacher.r")
+
+require('dotenv').config()
+
 const studentRoutes = require("./router/student");
-require("dotenv").config();
+
 
 const app = express();
 const port = process.env.port || 5000;
@@ -33,7 +39,12 @@ app.use((req, res, next) => {
 });
 
 app.use("/", myRouter);
+
+app.use(adminRoute)
+app.use(teacherRoute)
+
 app.use(studentRoutes);
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode | 500;
