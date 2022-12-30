@@ -1,0 +1,54 @@
+<div class="main-container d-flex">
+                {{>sidebar}}
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Score</div>
+            <form action="/scores" class="container">
+                <div class="row justify-content-around">
+                    <label class="col-1" for="semester">Semester:</label>
+                    <select class="col-1" name="semester" id="semester">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                    <div class="col-3"></div>
+                    <label class="col-1" for="year">Year:</label>
+                    <select class="col-1" name="year" id="year">
+                        {{#each years}}
+                        <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="row my-5 justify-content-center">   
+                    <button class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Show</button>
+                </div>
+            </form>
+            <table id="example" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Semester</th>
+                        <th>15-min</th>
+                        <th>45-min</th>
+                        <th>Semester Final Test</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each scores}}
+                    <tr>
+                        <td>{{this.sub}}</td>
+                        <td>{{this.sem}}</td>
+                        <td>{{this.score_15}}</td>
+                        <td>{{this.score_45}}</td>
+                        <td>{{this.score_final}}</td>
+                        <td>{{this.average}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>

@@ -3,10 +3,13 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const path = require("path");
+const flash = require("connect-flash");
 const myRouter = require("./router/main.r.js");
+const studentRoutes = require("./router/student");
+require("dotenv").config();
 
 const app = express();
-const port = 5000;
+const port = process.env.port || 5000;
 
 //loger
 app.use(cookieParser());
@@ -20,8 +23,17 @@ require("./config/session")(app);
 // parse data post method
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(flash());
+
+// locals
+app.use((req, res, next) => {
+  res.locals.reportMessage = req.flash("report");
+  res.locals.errorMessage = req.flash("error");
+  next();
+});
 
 app.use("/", myRouter);
+app.use(studentRoutes);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode | 500;
