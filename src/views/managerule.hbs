@@ -1,0 +1,206 @@
+<div class="main-container d-flex">
+                {{>adsidebar}}
+
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Manage Rules</div>
+            {{#if hasError}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-danger">{{error}}</h5>
+          </div>
+          {{/if}}
+          {{#if hasMess}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-success">{{mess}}</h5>
+          </div>
+          {{/if}}    
+            <div class="card" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                <div class="card-body">
+                    <div class="container d-flex justify-content-center">
+                        <label class="col-1" for="account">Rules:</label>
+                        <select class="col-2" name="account" id="rule">
+                            <option value="minOld">Tuổi tối thiểu</option>
+                            <option value="maxOld">Tuổi tối đa</option>
+                            <option value="maxClassSize">Sĩ số tối đa</option>
+                            <option value="maxClassAmount">Số lượng lớp</option>
+                            <option value="maxSubject">Số lượng môn học</option>
+                            <option value="passScore">Điểm chuẩn đạt</option>
+                            <option value="newSubject">Môn học mới</option>
+                            <option value="changeSubject">Đổi tên môn học</option>
+                        </select>
+                    </div>
+                    <div class="container d-flex justify-content-center mt-5">
+                        <button id="btn_startEdit" class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Edit</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal fade " id="editRulesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                        </div>
+
+                        <form action="/managerule" method="post">
+                            <div class="modal-body">
+                                <div class="container d-flex justify-content-around gap-1">
+                                    <div class="col-6">
+                                        <label for="inputValue" class="form-label">Value</label>
+                                        <input
+                                            name="value"
+                                            type="text"
+                                            class="form-control"
+                                            id="inputValue"
+                                            placeholder="Ex: 10"
+                                            {{!-- disabled --}}
+                                            />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="btn_close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="btn_edit" class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Edit</button>
+                                <button 
+                                name="option"
+                                id="btn_save" 
+                                type="submit" 
+                                class="btn col-2" 
+                                style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save</button>
+                            </div>
+                        </form>
+
+                        
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal Change Subject-->
+            {{!-- <div class="modal fade " id="editSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container  justify-content-center gap-1">
+                                <div class="col-12">
+                                    
+                                        Đổi môn
+                                    
+                                     <select name="subjects" id="subjects" class="col-2">
+                                        <option value="Toán">Toán</option>
+                                        <option value="Văn">Văn</option>
+                                    </select> 
+                                    
+                                        thành môn
+                                    
+                                </div>
+                            </div>
+                            <div class="container d-flex justify-content-center mt-4">
+                                <div class="col-5">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="inputValue"
+                                        placeholder="Ex: 10"
+                                        disabled/>
+                                </div> 
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btn_close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button id="btn_edit" class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Edit</button>
+                            <button id="btn_save" class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
+    
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            
+            
+
+            // BE set cho nút Save
+            $("#btn_save").click(function(event){
+
+                // TODO: send input to server
+                $("#minOld").prop("disabled", true);
+                $("#maxOld").prop("disabled", true);
+                $("#size").prop("disabled", true);
+                $("#totalClass").prop("disabled", true);
+                $("#totalSubject").prop("disabled", true);
+                $("#passScore").prop("disabled", true);
+                $("#newSubject").prop("disabled", true);
+                $("#totalClass").prop("disabled", true);
+                $("#changeSubject").prop("disabled", true);
+
+                $("#btn_edit").hide();
+                $("#btn_save").show();
+            })
+
+            
+
+            $("#btn_startEdit").click(function(event){
+                // Show Modal
+                event.preventDefault()
+                // Set tiltle
+                var title = $("#rule").find(":selected").html();
+                $(".modal-title").text(title);
+                var titleVal = $("#rule").find(":selected").val()
+                console.log(titleVal)
+                $("#inputValue").attr('name', titleVal)
+                $("#btn_save").attr('value', titleVal)
+                
+                console.log("name day",$("#inputValue").attr('name'))
+                console.log("name day",$("#inputValue").attr('name'))
+
+                console.log($("#inputValue").val())
+
+                // Set visual for button
+                $("#btn_save, #editSubjectModal #btn_save").show();
+                $("#btn_edit, #editSubjectModal #btn_edit").hide();
+
+                {{!-- $("#btn_edit, #editSubjectModal #btn_edit").click(function(event){
+                    event.preventDefault()
+
+                    $("#inputValue, #editSubjectModal #inputValue").prop("disabled", false);
+                    $("#btn_edit, #editSubjectModal #btn_edit").hide();
+                    $("#btn_save, #editSubjectModal #btn_save").show();
+                }) --}}
+
+                {{!-- $("#btn_save, #editSubjectModal #btn_save").click(function(){
+                    $("#btn_edit, #editSubjectModal #btn_edit").show();
+                    $("#btn_save, #editSubjectModal #btn_save").hide();
+                    $("#inputValue, #editSubjectModal #inputValue").prop("disabled", true);
+                }) --}}
+
+                {{!-- $("#btn_close, #editSubjectModal #btn_close").click(function(){
+                    $("#inputValue, #editSubjectModal #inputValue").prop("disabled", true);
+                    $("#btn_edit, #editSubjectModal #btn_edit").show();
+                    $("#btn_save, #editSubjectModal #btn_save").hide();
+                }) --}}
+                
+                if ($("#rule").find(":selected").val() == "changeSubject")
+                {
+                    $("#editSubjectModal").modal("show");
+                }
+                else {
+                    $("#editRulesModal").modal("show");
+                }
+                
+            })
+            
+        })
+    </script>

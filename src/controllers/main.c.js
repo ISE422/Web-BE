@@ -6,19 +6,23 @@ const hashLength = 64;
 
 module.exports = {
   renderHomePage: (req, res, next) => {
-    const role = req.session.role;
 
-    switch (role) {
-      case "teacher":
-        res.redirect("/infomation");
+    console.log(req.session);
+    switch (req.session.role) {
+      case 'admin':
+        res.redirect("/createacc")
         break;
-      case "student":
-        res.redirect("/student-infomation");
+      case 'teacher':
+        res.redirect("/infomation")
         break;
+      case 'student':
+        res.redirect("/student-infomation")
       default:
-        res.redirect("/admin");
+        res.redirect("/login")
         break;
     }
+    
+
   },
   renderLoginPage: (req, res, next) => {
     res.render("login");
