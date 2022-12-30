@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const path = require("path");
 const myRouter = require("./router/main.r.js");
 const adminRoute = require("./router/admin.r")
+const teacherRoute = require("./router/teacher.r")
 
 require('dotenv').config()
 
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", myRouter);
 app.use(adminRoute)
+app.use(teacherRoute)
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode | 500;
