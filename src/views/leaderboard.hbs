@@ -1,79 +1,85 @@
 <div class="main-container d-flex">
-                {{>sidebar}}
+        {{>sidebar}}
 
-
-        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
-            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9;">Leader Board</div>
-            <form action="/leaderboard" class="container">
+               <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Leader Board</div>
+            <form action="/leaderboard" class="container" method="POST">
                 <div class="row justify-content-around">
                     <label class="col-1" for="subjects">Subjects:</label>
                     <select class="col-1" name="subjects" id="subjects">
                         <option value="all">Tất cả</option>
-                        <option value="toan">Toán</option>
-                        <option value="ly">Lý</option>
-                        <option value="hoa">Hóa</option>
-                        <option value="sinh">Sinh</option>
-                        <option value="su">Sử</option>
-                        <option value="dia">Địa</option>
-                        <option value="van">Văn</option>
-                        <option value="dduc">Đ.Đức</option>
-                        <option value="tduc">T.Dục</option>
+                        <option value="MHTOAN">Toán</option>
+                        <option value="MHLY">Lý</option>
+                        <option value="MHHOA">Hóa</option>
+                        <option value="MHSINH">Sinh</option>
+                        <option value="MHSU">Sử</option>
+                        <option value="MHDIA">Địa</option>
+                        <option value="MHVAN">Văn</option>
+                        <option value="MHDAODUC">Đạo Đức</option>
+                        <option value="MHTHEDUC">Thể Dục</option>
                     </select>
 
                     <label class="col-1" for="grade">Grade:</label>
                     <select class="col-1" name="grade" id="grade">
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
+                        <option value="K10">10</option>
+                        <option value="K11">11</option>
+                        <option value="K12">12</option>
                     </select>
         
                     <label class="col-1" for="semester">Semester:</label>
                     <select class="col-1" name="semester" id="semester">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option value="Học kỳ 1">1</option>
+                        <option value="Học kỳ 2">2</option>
+                        <option value="Cả năm học">Cả năm</option>
                     </select>
 
                     <label class="col-1" for="year">Year:</label>
                     <select class="col-1" name="year" id="year">
-                        {{#each years}}
-                        <option value="{{this}}">{{this}}</option>
-                        {{/each}}
+                        <option value="2019-2020">2020</option>
+                        <option value="2020-2021">2021</option>
+                        <option value="2021-2022">2022</option>
                     </select>
-                </div>
+
+                    <label class="col-1" for="limit">Limit:</label>
+                    <select class="col-1" name="limit" id="limit">
+                        <option value="10">Top 10</option>
+                        <option value="50">Top 50</option>
+                        <option value="100">Top 100</option>
+                    </select>
+                </div> 
                 <div class="row my-5 justify-content-center gap-5">   
-                    <button name="type" value="top10" class="btn col-1" style="background: #f8c4d9;">Top 10</button>
-                    <button name="type" value="top50" class="btn col-1" style="background: #f8c4d9;">Top 50</button>
+                    <button class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;" type="submit">View Top-Ranking Student </button>
+
                 </div>
             </form>
-                <table id="example" class="table table-striped" style="width:100%">
+                <table id="example" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
                 <thead>
                     <tr>
+                        <th>Ranking</th>
                         <th>Student</th>
                         <th>GPA</th>
-                        <th>Ranking</th>
                         <th>Grade</th>
                         <th>Semester</th>
                         <th>Year</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each data}}
+                {{#each topRanksArr}}
                     <tr>
-                        <td>{{this.name}}</td>
-                        <td>{{this.gpa}}</td>
-                        <td>{{this.ranking}}</td>
-                        <td>{{this.grade}}</td>
-                        <td>{{this.semester}}</td>
-                        <td>{{this.year}}</td>
+                        <td>{{this.rank}}</td>
+                        <td>{{this.hoTen}}</td>
+                        <td>{{this.diem}}</td>
+                        <td>{{this.tenKhoi}}</td>
+                        <td>{{this.info.semester}}</td>
+                        <td>{{this.info.year}}</td>
                     </tr>
-                    {{/each}}
-                    
+                {{/each}}             
                 </tbody>
             </table>
-        </div>
-    </div>
-    <script>
-        $(document).ready(function () {
+        </div>            
+</div>
+<script>    
+          $(document).ready(function () {
             $('#example').DataTable();
         });
     </script>
