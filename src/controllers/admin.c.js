@@ -1,3 +1,4 @@
+const { countStInClass } = require("../models/admin.m")
 const adminM = require("../models/admin.m")
 module.exports={
     renderCreateAcc: async (req,res,next)=>{
@@ -120,8 +121,54 @@ module.exports={
         })
       
       },
-      renderManageStudent: (req,res,next)=>{
-        res.render('managestudent')
+
+      renderManageStudent: async(req,res,next)=>{
+
+        let error = ""
+        let hasErr = false
+
+        if(req.session.error!="")
+        {
+            error=req.session.error
+            req.session.error=""
+            hasErr=true
+        }
+
+        let hasMess = false
+        let mess = ""
+
+        if(req.session.message!="")
+        {
+            mess=req.session.message
+            req.session.message=""
+            hasMess=true
+        }
+
+        let allStus = await adminM.getAll("HocSinh")
+        let allClasses = await adminM.getAll("Lop")
+
+        console.log(allClasses);
+
+        allStus=allStus.map(item=>{
+            let classname = ""
+            let classitem = allClasses.find( iclass => iclass.maLop===item.maLop)
+            classname=classitem.tenLop
+            // console.log(classname);
+            item.tenLop=classname
+            return item
+        })
+
+        // console.log(allStus);
+
+        res.render('managestudent',{
+            error: error,
+            hasError: hasErr,
+            hasMess: hasMess,
+            mess: mess,
+            allstus: allStus,
+            allClasses: allClasses,
+            
+        })
       
       },
       renderManageRule: (req,res,next)=>{
@@ -468,6 +515,46 @@ module.exports={
                 break;
             }
 
+            default:
+                break;
+        }
+      },
+
+      handleStudent: async (req,res,next)=>{
+        console.log(req.body);
+        switch (req.body.option) {
+            case 'delete':
+                {
+                let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.studentid)
+                let dlHS = await adminM.deleteByID("HocSinh","maHS",req.body.studentid)
+                req.session.message = "deleted !!!"
+                res.redirect("/managestudent")
+                break;
+                }
+            case 'update':
+            {   
+                let qdSiSo = await adminM.getQuiDinh("qdsiso")
+                //console.log(qdSiSo);
+                let siSoToiDa = qdSiSo.giaTri
+                
+                console.log(req.body);
+                console.log(siSoToiDa);
+                
+                let sisoHienTai = await countStInClass(req.body.classstu)
+                console.log(sisoHienTai);
+                if(sisoHienTai>= siSoToiDa){
+                    req.session.error = "failed, class is full !!!"
+                    res.redirect("/managestudent")
+                }
+
+
+                
+                let updateStu = await adminM.updateClassForStudent(req.body.studentid, req.body.classstu)
+                req.session.message = "updated !!!"
+                res.redirect("/managestudent")
+                break;
+            }
+        
             default:
                 break;
         }

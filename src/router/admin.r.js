@@ -21,6 +21,8 @@ mainC.handleTeacher)
 
 router.get('/managestudent',  auth.authHaveUser, auth.authRole('admin'), 
 mainC.renderManageStudent)
+router.post('/managestudent',  auth.authHaveUser, auth.authRole('admin'), 
+mainC.handleStudent)
 
 router.get('/managerule',  auth.authHaveUser, auth.authRole('admin'), 
 mainC.renderManageRule)

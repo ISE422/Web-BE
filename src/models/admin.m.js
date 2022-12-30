@@ -183,10 +183,15 @@ module.exports={
             `)
             return rs.rows
         },
-
+    updateClassForStudent: async(maHS, maLop)=>{
+        var client = await getClient()
+            var rs = await client.query
+            (`
+            UPDATE public."HocSinh"
+            SET "maLop"='${maLop}'
+            WHERE "maHS" like '${maHS}';
+            `)
+            return rs.rows
+        },
     
-
-    
-
-
 }
