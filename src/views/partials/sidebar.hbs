@@ -116,12 +116,14 @@
   </div>
 
 {{/if}}
+
 <script src="./jquery.js"></script>
 </script>
 <script>
   $('#logoutbtn').click(function (){ 
     $('#logoutform').submit()
   });
+  
   $('#infobtn').click(function (){ 
     $('#infoform').submit()
   });
@@ -137,7 +139,6 @@
   $('#createreportbtn').click(function (){ 
     $('#createreportform').submit()
   });
-
   $("li").hover(function(){
   $(this).css("cursor", "pointer");
 });
