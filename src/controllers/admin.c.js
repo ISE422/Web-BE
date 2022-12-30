@@ -66,8 +66,58 @@ module.exports={
         })
       
       },
-      renderManageTeacher: (req,res,next)=>{
-        res.render('manageteacher')
+      renderManageTeacher: async(req,res,next)=>{
+
+        let allteacher = await adminM.getAll("GiaoVien")
+        let allsubs = await adminM.getAll("MonHoc")
+        let allClasses= await adminM.getAll("Lop")
+        let phanCong = await adminM.getAll("PhanCong")
+        
+        allteacher = allteacher.map(teacher =>{
+            let resfind = allsubs.find(item=> item.maMH === teacher.maMH)
+            let findClassTeach = phanCong.filter(item=> item.maGV === teacher.maGV)
+            teacher.tenLop=""
+            if(findClassTeach.length==0)teacher.tenLop+="No class"
+            else{
+                let findclass = allClasses.find(temp => temp.maLop===findClassTeach[0].maLop)
+                // console.log(findclass);
+                teacher.tenLop= findclass.tenLop
+
+            }
+             
+            resfind? teacher.tenMH=resfind.tenMH : teacher.tenMH = "No subject"
+            return teacher
+        })
+        // console.log(allteacher);
+
+        let error = ""
+        let hasErr = false
+
+        if(req.session.error!="")
+        {
+            error=req.session.error
+            req.session.error=""
+            hasErr=true
+        }
+
+        let hasMess = false
+        let mess = ""
+
+        if(req.session.message!="")
+        {
+            mess=req.session.message
+            req.session.message=""
+            hasMess=true
+        }
+        res.render('manageteacher',{
+            allteacher: allteacher,
+            allsubjs: allsubs,
+            allClasses: allClasses,
+            error: error,
+            hasError: hasErr,
+            hasMess: hasMess,
+            mess: mess,
+        })
       
       },
       renderManageStudent: (req,res,next)=>{
@@ -75,7 +125,31 @@ module.exports={
       
       },
       renderManageRule: (req,res,next)=>{
-        res.render('managerule')
+        let error = ""
+        let hasErr = false
+
+        if(req.session.error!="")
+        {
+            error=req.session.error
+            req.session.error=""
+            hasErr=true
+        }
+
+        let hasMess = false
+        let mess = ""
+
+        if(req.session.message!="")
+        {
+            mess=req.session.message
+            req.session.message=""
+            hasMess=true
+        }
+        res.render('managerule',{
+            error: error,
+            hasError: hasErr,
+            hasMess: hasMess,
+            mess: mess,
+        })
       
       },
 
@@ -247,4 +321,157 @@ module.exports={
 
         }
       },
+
+      handleRule: async (req,res,next)=>{
+        console.log(req.body.option);
+        switch (req.body.option) {
+            case 'minOld':
+                {
+                console.log("case min old");
+                let result = await adminM.updateQuiDinh("qdtuoimin",req.body.minOld)
+                req.session.message = "updated !!!"
+                res.redirect("/managerule")
+                break;
+                }
+            case 'maxOld':
+                {
+                console.log("case maxOld");
+                let result = await adminM.updateQuiDinh("qdtuoimax",req.body.maxOld)
+                req.session.message = "updated !!!"
+                res.redirect("/managerule")
+                break;
+                }
+            case 'maxClassSize':
+                {
+                    console.log("case maxClassSize");
+                    let result = await adminM.updateQuiDinh("qdsiso",req.body.maxClassSize)
+                    req.session.message = "updated !!!"
+                    res.redirect("/managerule")
+                    break;
+                }
+            case 'maxClassAmount':
+                {
+                    console.log("case maxClassAmount");
+                    let result = await adminM.updateQuiDinh("qdsllop",req.body.maxClassAmount)
+                    req.session.message = "updated !!!"
+                    res.redirect("/managerule")
+                    break;
+                }
+            case 'maxSubject':
+                {
+                    console.log("case maxSubject");
+                    let result = await adminM.updateQuiDinh("qdslmonhoc",req.body.maxSubject)
+                    req.session.message = "updated !!!"
+                    res.redirect("/managerule")
+                    break;
+                }
+            case 'passScore':
+                {
+                    console.log("case passScore");
+                    let result = await adminM.updateQuiDinh("qddiemchuan",req.body.passScore)
+                    req.session.message = "updated !!!"
+                    res.redirect("/managerule")
+                    break;
+                }
+            case 'newSubject':
+                console.log("case newSubject");
+
+                let data = req.body.newSubject
+                let temp = data.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                temp=temp.trim()
+                let token = temp.split(" ")
+                let newTemp = ""
+                token.forEach(element => {
+                    newTemp+=element
+                });
+                newTemp="MH"+newTemp.toUpperCase()
+
+                
+                
+                let countSub = await adminM.countRowInTable("MonHoc")
+                let maxSub = await adminM.getQuiDinh("qdslmonhoc")
+                maxSub=maxSub.giaTri
+                // let find1 = await adminM.findValueInTable("MonHoc","maMH","MHDAODUC")
+                let find2 = await adminM.findValueInTable("MonHoc","maMH",newTemp)
+                // console.log(countSub,maxSub,find1,find2);
+
+                if(find2){
+                    req.session.error = "existed class !!!"
+                    res.redirect("/managerule")
+                    break;
+                }
+
+                if(countSub>=maxSub){
+                    req.session.error = "amount of class is maximum, try again !!!"
+                    res.redirect("/managerule")
+                    break;
+                }
+
+                let obj={}
+                obj.maMH=newTemp
+                obj.tenMH=data
+
+                let diemchuan = await adminM.getQuiDinh("qddiemchuan")
+                console.log(diemchuan);
+                diemchuan=diemchuan.giaTri
+                obj.diemChuan=diemchuan
+                console.log(obj);
+                let result = await adminM.insertSubject(obj)
+                req.session.message = "updated !!!"
+                res.redirect("/managerule")
+                break;
+
+            case 'changeSubject':
+                console.log("case changeSubject");
+                break;
+            default:
+                req.session.error = "Error, try again!!!"
+                res.redirect("/managerule")
+                break;
+        }
+      },
+
+      handleTeacher: async (req,res,next)=>{
+        console.log(req.body);
+        switch (req.body.option) {
+            case 'delete':
+            {
+                let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.teacherid)
+                let dlGV = await adminM.deleteByID("GiaoVien","maGV",req.body.teacherid)
+                let dlPC = await adminM.deleteByID("PhanCong","maGV",req.body.teacherid)
+                req.session.message = "updated !!!"
+                res.redirect("/manageteacher")
+                break;
+            }
+
+            case 'update':
+            {
+                
+                let updateMH = await adminM.updateSubForTeacher(req.body.teacherid, req.body.subject)
+                
+                let findPC = await adminM.findValueInTable("PhanCong", "maGV", req.body.teacherid)
+                console.log(findPC);
+                if(!findPC){
+                    let data={}
+                    let lastID = await adminM.getLastId("PhanCong","maPhanCong")
+                    data.maPhanCong=lastID+1
+                    data.maGV=req.body.teacherid
+                    data.maLop=req.body.classteach
+                    let insertPC = adminM.insertPhanCong(data)
+                }else{
+                    let updatePC = await adminM.updatePhanCong(req.body.teacherid, req.body.classteach)
+                }
+                req.session.message = "updated !!!"
+                res.redirect("/manageteacher")
+                break;
+            }
+
+            default:
+                break;
+        }
+      }
+
+      
 }

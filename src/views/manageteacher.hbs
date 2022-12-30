@@ -4,6 +4,16 @@
 
         <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
             <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Manage Teachers</div>
+            {{#if hasError}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-danger">{{error}}</h5>
+          </div>
+          {{/if}}
+          {{#if hasMess}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-success">{{mess}}</h5>
+          </div>
+          {{/if}}  
                 <table id="example" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" >
                 <thead>
                     <tr>
@@ -14,24 +24,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{#each allteacher}}
                     <tr>
-                        <td class="id">0001</td>
-                        <td>Thái Văn An</td>
-                        <td>10.2</td>
-                        <td>Toán</td>
+                        <td class="id">{{this.maGV}}</td>
+                        <td class="fullname">{{this.hoTen}}</td>
+                        <td class="classname">{{this.tenLop}}</td>
+                        <td class="subname">{{this.tenMH}}</td>
                     </tr>
-                    <tr>
-                        <td class="id">0002</td>
-                        <td>Huỳnh Bá Vinh</td>
-                        <td>10.4</td>
-                        <td>Văn</td>
-                    </tr>
-                    <tr>
-                        <td class="id">0003</td>
-                        <td>Lê Văn Lộc</td>
-                        <td>11.2</td>
-                        <td>Lý</td>
-                    </tr>
+                    {{/each}}
+                    
                 </tbody>
             </table>
             <!-- Modal -->
@@ -42,37 +43,54 @@
                             <h5 class="modal-title" id="exampleModalLabel">ID: </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+
+                        <form action="/manageteacher" method="post">
+
+<div class="modal-body">
                             <div class="container d-flex justify-content-around gap-1">
-                                <div class="col-4">
+                                <div class="col-4" >
                                     <label for="modal_id" class="form-label">ID</label>
                                     <input
                                         type="text"
                                         class="form-control"
                                         id="modal_id"
-                                        placeholder="0001"/>
+                                        name="teacherid"
+                                        hidden
+                                        />
                                 </div>
                                 <div class="col-4">
                                     <label for="modal_class" class="form-label">Class</label>
-                                    <input
+                                    {{!-- <input
                                         type="text"
                                         class="form-control"
                                         id="modal_class"
-                                        placeholder="10.3"/>
+                                        placeholder="10.3"/> --}}
+                                        <select class="form-control" name="classteach" id="classteach">
+                                            {{#each allClasses}}
+                                            <option class="datalop" value="{{this.maLop}}">{{this.tenLop}}</option>
+                                            {{/each}}
+                                        </select>
                                 </div>
                                 <div class="col-4">
                                     <label for="modal_subject" class="form-label">Subject</label>
-                                    <input
+                                    {{!-- <input
                                         type="text"
                                         class="form-control"
                                         id="modal_subject"
-                                        placeholder="Toán"/>
+                                        placeholder="Toán"/> --}}
+                                        <select class="form-control" name="subject" id="subject">
+                                            {{#each allsubjs}}
+                                            <option class="datamh" value="{{this.maMH}}">{{this.tenMH}}</option>
+                                            {{/each}}
+                                        </select>
                                 </div>
                             </div>
                             <div class="container">
                             <div class="col-12">
                                 <label for="modal_name" class="form-label">Name</label>
                                 <input
+                                disabled
+                                name="fullname"
                                     type="text"
                                     class="form-control"
                                     id="modal_name"
@@ -82,9 +100,14 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save changes</button>
-                            <button type="button" class="btn" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Delete</button>
+                            <button type="submit" name="option" value="update" class="btn" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save changes</button>
+                            <button type="submit"name="option" value="delete" class="btn" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Delete</button>
                         </div>
+
+                        </form>
+                        
+
+
                     </div>
                 </div>
             </div>
@@ -96,17 +119,70 @@
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#example').DataTable(); 
-            // when table-row is clicked
             $("#example tbody tr").click(function () {
                 
                 var item = $(this).closest("tr")  
                        .find(".id")    
                        .text();
+
+                var fullname = $(this).closest("tr")  
+                       .find(".fullname")    
+                       .text();
+
+                var classes =[]
+                var subjects=[]
+
+                let arrclass = document.getElementsByClassName("datalop")
+                let arrsubs = document.getElementsByClassName("datamh")
+
+                for(let i=0;i<arrclass.length;i++){
+                    let obj={}
+                    obj.id=arrclass[i].value
+                    obj.value=arrclass[i].text
+                    classes.push(obj)
+                }
+
+                for(let i=0;i<arrsubs.length;i++){
+                    let obj={}
+                    obj.id=arrsubs[i].value
+                    obj.value=arrsubs[i].text
+                    subjects.push(obj)
+                }
+
+
+                var classname = $(this).closest("tr")  
+                        .find(".classname")    
+                        .text();
+                var subname = $(this).closest("tr")  
+                        .find(".subname")    
+                        .text();
+
+                let obj1=classes.find(item => item.value===classname)
+                let obj2=subjects.find(item => item.value===subname)
+                
+                console.log(obj1,obj2)
+                
                 
                 $(".modal-title").text("ID: " + item);
+                console.log(fullname)
+
+                $("#modal_id").val(item)
+                
+                $("#modal_name").val(fullname)
+                
+                let id1=""
+                let id2=""
+                if(obj2) id2=obj2.id
+                if(obj1) id1=obj1.id
+
+                $("#classteach").val(id1)
+                $("#subject").val(id2)
                      
                 $("#editScoreModal").modal("show");
             });
+            
+            $('#example').DataTable(); 
+            // when table-row is clicked
+            
         });
     </script>

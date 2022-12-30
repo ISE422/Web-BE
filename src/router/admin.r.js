@@ -16,12 +16,16 @@ mainC.handleCreateClass)
 
 router.get('/manageteacher',  auth.authHaveUser, auth.authRole('admin'), 
 mainC.renderManageTeacher)
+router.post('/manageteacher',  auth.authHaveUser, auth.authRole('admin'), 
+mainC.handleTeacher)
 
 router.get('/managestudent',  auth.authHaveUser, auth.authRole('admin'), 
 mainC.renderManageStudent)
 
 router.get('/managerule',  auth.authHaveUser, auth.authRole('admin'), 
 mainC.renderManageRule)
+router.post('/managerule',  auth.authHaveUser, auth.authRole('admin'), 
+mainC.handleRule)
 
 
 

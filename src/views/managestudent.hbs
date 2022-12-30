@@ -4,6 +4,16 @@
 
         <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
             <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-4" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Manage Students</div>
+                {{#if hasError}}
+                <div class="col-md-12 p-2 text-center">
+                    <h5 class=" text-danger">{{error}}</h5>
+                </div>
+                {{/if}}
+                {{#if hasMess}}
+                <div class="col-md-12 p-2 text-center">
+                    <h5 class=" text-success">{{mess}}</h5>
+                </div>
+                {{/if}}  
                 <table id="example" class="table table-striped rounded" style="width:100%; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
                 <thead>
                     <tr>
