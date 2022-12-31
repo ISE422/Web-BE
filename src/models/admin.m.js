@@ -194,5 +194,15 @@ module.exports={
             `)
             return rs.rows
         },
+    updateSubName: async(maMH, tenMH)=>{
+        var client = await getClient()
+            var rs = await client.query
+            (`
+            UPDATE public."MonHoc"
+            SET "tenMH"='${tenMH}'
+            WHERE "maMH" like '${maMH}';
+            `)
+            return rs.rows
+    }
     
 }

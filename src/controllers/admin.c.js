@@ -187,7 +187,7 @@ module.exports={
         }
       
       },
-      renderManageRule: (req,res,next)=>{
+      renderManageRule: async (req,res,next)=>{
         let error = ""
         let hasErr = false
 
@@ -207,13 +207,21 @@ module.exports={
             req.session.message=""
             hasMess=true
         }
-        res.render('managerule',{
-            error: error,
-            hasError: hasErr,
-            hasMess: hasMess,
-            mess: mess,
-        })
-      
+
+        try{
+            // let allClasses = await adminM.getAllClasses()
+            let allsubjs = await adminM.getAllSubjects()
+
+            res.render('managerule',{
+                error: error,
+                hasError: hasErr,
+                hasMess: hasMess,
+                mess: mess,
+                subjs: allsubjs
+            })
+        }catch(err){
+            next(err)
+        }
       },
 
       handleCreateAcc: async(req,res,next)=>{
@@ -524,8 +532,14 @@ module.exports={
                 }
 
             case 'changeSubject':
-                try{console.log("case changeSubject");
-                break;}catch(err){
+                try{
+                console.log("case changeSubject");
+                console.log(req.body);
+                let update = await adminM.updateSubName(req.body.subject,req.body.newSubName)
+                req.session.message = "updated !!!"
+                res.redirect("/managerule")
+                break;
+                    }catch(err){
                     next(err)
                     break;                
                 }

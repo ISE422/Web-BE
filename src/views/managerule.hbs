@@ -80,24 +80,28 @@
 
 
             <!-- Modal Change Subject-->
-            {{!-- <div class="modal fade " id="editSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade " id="editSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+
+                        <form action="/managerule" method="post">
+
                         <div class="modal-body">
                             <div class="container  justify-content-center gap-1">
                                 <div class="col-12">
                                     
                                         Đổi môn
-                                    
-                                     <select name="subjects" id="subjects" class="col-2">
-                                        <option value="Toán">Toán</option>
-                                        <option value="Văn">Văn</option>
-                                    </select> 
-                                    
+
+                                       
+                                    <select name="subject" id="subjects">
+                                        {{#each subjs}}
+                                        <option value="{{this.maMH}}">{{this.tenMH}}</option>
+                                        {{/each}}
+                                    </select>
                                         thành môn
                                     
                                 </div>
@@ -105,11 +109,12 @@
                             <div class="container d-flex justify-content-center mt-4">
                                 <div class="col-5">
                                     <input
+                                    name="newSubName"
                                         type="text"
                                         class="form-control"
                                         id="inputValue"
                                         placeholder="Ex: 10"
-                                        disabled/>
+                                        />
                                 </div> 
                             </div>
                             
@@ -117,11 +122,14 @@
                         <div class="modal-footer">
                             <button id="btn_close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button id="btn_edit" class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Edit</button>
-                            <button id="btn_save" class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save</button>
+                            <button name="option" value="changeSubject" type="submit" id="btn_save" class="btn col-2" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Save</button>
                         </div>
+
+                        </form>
+
                     </div>
                 </div>
-            </div> --}}
+            </div>
 
     
         </div>
