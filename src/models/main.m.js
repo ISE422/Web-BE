@@ -14,8 +14,8 @@ module.exports = {
         ans.password = "123";
         ans.role = "student";
         break;
-      case "teacher1":
-        ans.username = "teacher1";
+      case "20000000":
+        ans.username = "20000000";
         ans.password = "123";
         ans.role = "teacher";
         break;

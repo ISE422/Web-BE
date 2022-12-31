@@ -121,39 +121,7 @@ module.exports = {
     console.log("sessionafter : ", req.session);
     res.redirect("/");
   },
-  renderInfo: (req, res, next) => {
-    try {
-      let info = mainM.getInfoByID();
-      console.log(info);
-      info.gender == "Nu" ? (info.ismale = false) : (info.isfemale = false);
-      if (info) {
-        res.render("info", {
-          obj: info,
-          teacher: true,
-        });
-      }
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  handleUpdateInfo: (req, res, next) => {
-    let newInfo = req.body;
-    console.log("newInfo ", newInfo);
-
-    let user = mainM.getInfoByID();
-    // let user
-    if (user) {
-      let update = mainM.updateInfoByID();
-      res.render("info", {
-        obj: update,
-        showNav: true,
-        teacher: true,
-      });
-    } else {
-      res.redirect("/infomation", {});
-    }
-  },
+ 
 
   renderClasses: (req, res, next) => {
     let obj = [];
