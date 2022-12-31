@@ -10,6 +10,7 @@ router.get('/',auth.authHaveUser,mainC.renderHomePage)
 router.get('/login',mainC.renderLoginPage)
 router.post('/login', mainC.handleLogin)
 router.post('/logout',auth.authHaveUser, mainC.handleLogOut)
+// router.post('/addadmin',mainC.addAdmin)
 
 
 

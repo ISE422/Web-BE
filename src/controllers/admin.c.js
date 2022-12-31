@@ -230,6 +230,7 @@ module.exports={
                 if(siSoHienTai>= siSoToiDa){
                     req.session.error = "Class is full, try again!!!"
                     res.redirect("/createacc")
+                    return
                 }
         
                 let tuoiMin = await adminM.getQuiDinh("qdtuoimin")
@@ -238,6 +239,7 @@ module.exports={
                 if(!req.body.birthday){
                     req.session.error = "Birthday is empty, try again!!!"
                     res.redirect("/createacc")
+                    return
                 }
                 let birthday=Date.parse(req.body.birthday)
                 //console.log(birthday);
@@ -249,6 +251,7 @@ module.exports={
                 if(age>tuoiMax.giaTri || age <tuoiMin.giaTri){
                     req.session.error = "Age is not suitable, try again!!!"
                     res.redirect("/createacc")
+                    return
                 }
         
                 let lastID = await adminM.getLastId("HocSinh","maHS")
@@ -290,6 +293,7 @@ module.exports={
                 if(!req.body.fullname ||!req.body.birthday ||!req.body.address ||!req.body.email){
                     req.session.error = "Please fill all data, try again!!!"
                     res.redirect("/createacc")
+                    return
                 }
                 let lastID = await adminM.getLastId("GiaoVien","maGV")
                 //console.log(lastID);
@@ -335,6 +339,7 @@ module.exports={
                 res.redirect("/createacc")
                 break;
         }
+        return
       },
       
       handleCreateClass: async (req,res,next)=>{
@@ -346,13 +351,15 @@ module.exports={
                 if(!req.body.grade){
                     req.session.error = "Value error (Grade), try again!!!"
                     res.redirect("/createclass")
+                    return
                 }
         
                 if(req.body.grade!="10" &&req.body.grade!="11" && req.body.grade!="12"){
                     //console.log("faile check");
                     req.session.error = "Value error (Grade), try again!!!"
                     //console.log("create error");
-                    return res.redirect("/createclass")
+                    res.redirect("/createclass")
+                    return
                 }else{
                     data.maKhoi = "K"+req.body.grade
                 }
@@ -367,11 +374,13 @@ module.exports={
                 if(existedClasses.length!=0){
                     req.session.error = "Existed Class, try again!!!"
                     res.redirect("/createclass")
+                    return
                 }
         
                 if(!req.body.headteacher){
                     req.session.error = "Lost of headteacher, try again!!!"
                     res.redirect("/createclass")
+                    return
                 }
         
                 let lastID = await adminM.getLastId("Lop","maLop")
@@ -384,6 +393,7 @@ module.exports={
         
                 req.session.message = "Successful insert class!!!"
                 res.redirect("/createclass")
+                return
             }catch(err){
                 next(err)
             }
@@ -523,7 +533,8 @@ module.exports={
                 req.session.error = "Error, try again!!!"
                 res.redirect("/managerule")
                 break;
-        }
+            }
+            return
       },
 
       handleTeacher: async (req,res,next)=>{
@@ -572,6 +583,7 @@ module.exports={
                 res.redirect("/manageteacher")
                 break;
         }
+        return
       },
 
       handleStudent: async (req,res,next)=>{
@@ -602,6 +614,7 @@ module.exports={
                 if(sisoHienTai>= siSoToiDa){
                     req.session.error = "failed, class is full !!!"
                     res.redirect("/managestudent")
+                    return
                 }
 
 
