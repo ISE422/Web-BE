@@ -1,5 +1,7 @@
 const { countStInClass } = require("../models/admin.m")
 const adminM = require("../models/admin.m")
+const bcrypt = require("bcrypt")
+const saltRounds = 10;
 module.exports={
     renderCreateAcc: async (req,res,next)=>{
 
@@ -23,20 +25,26 @@ module.exports={
             hasMess=true
         }
 
-        let allClasses = await adminM.getAllClasses()
-        //console.log(allClasses);
+        try{
+            let allClasses = await adminM.getAllClasses()
+            //console.log(allClasses);
+    
+            let allsubjs = await adminM.getAllSubjects()
+    
+    
+            res.render('createacc',{
+                error: error,
+                hasError: hasErr,
+                hasMess: hasMess,
+                mess: mess,
+                classes: allClasses,
+                subjs: allsubjs,
+            })
+        }catch(err){
+            next(err)
+        }
 
-        let allsubjs = await adminM.getAllSubjects()
-
-
-        res.render('createacc',{
-            error: error,
-            hasError: hasErr,
-            hasMess: hasMess,
-            mess: mess,
-            classes: allClasses,
-            subjs: allsubjs,
-        })
+        
       },
       renderCreateClass: (req,res,next)=>{
         let error = ""
@@ -69,28 +77,6 @@ module.exports={
       },
       renderManageTeacher: async(req,res,next)=>{
 
-        let allteacher = await adminM.getAll("GiaoVien")
-        let allsubs = await adminM.getAll("MonHoc")
-        let allClasses= await adminM.getAll("Lop")
-        let phanCong = await adminM.getAll("PhanCong")
-        
-        allteacher = allteacher.map(teacher =>{
-            let resfind = allsubs.find(item=> item.maMH === teacher.maMH)
-            let findClassTeach = phanCong.filter(item=> item.maGV === teacher.maGV)
-            teacher.tenLop=""
-            if(findClassTeach.length==0)teacher.tenLop+="No class"
-            else{
-                let findclass = allClasses.find(temp => temp.maLop===findClassTeach[0].maLop)
-                // console.log(findclass);
-                teacher.tenLop= findclass.tenLop
-
-            }
-             
-            resfind? teacher.tenMH=resfind.tenMH : teacher.tenMH = "No subject"
-            return teacher
-        })
-        // console.log(allteacher);
-
         let error = ""
         let hasErr = false
 
@@ -110,16 +96,42 @@ module.exports={
             req.session.message=""
             hasMess=true
         }
-        res.render('manageteacher',{
-            allteacher: allteacher,
-            allsubjs: allsubs,
-            allClasses: allClasses,
-            error: error,
-            hasError: hasErr,
-            hasMess: hasMess,
-            mess: mess,
-        })
-      
+        
+        try{
+            let allteacher = await adminM.getAll("GiaoVien")
+            let allsubs = await adminM.getAll("MonHoc")
+            let allClasses= await adminM.getAll("Lop")
+            let phanCong = await adminM.getAll("PhanCong")
+            
+            allteacher = allteacher.map(teacher =>{
+                let resfind = allsubs.find(item=> item.maMH === teacher.maMH)
+                let findClassTeach = phanCong.filter(item=> item.maGV === teacher.maGV)
+                teacher.tenLop=""
+                if(findClassTeach.length==0)teacher.tenLop+="No class"
+                else{
+                    let findclass = allClasses.find(temp => temp.maLop===findClassTeach[0].maLop)
+                    // console.log(findclass);
+                    teacher.tenLop= findclass.tenLop
+    
+                }
+                 
+                resfind? teacher.tenMH=resfind.tenMH : teacher.tenMH = "No subject"
+                return teacher
+            })
+    
+            
+            res.render('manageteacher',{
+                allteacher: allteacher,
+                allsubjs: allsubs,
+                allClasses: allClasses,
+                error: error,
+                hasError: hasErr,
+                hasMess: hasMess,
+                mess: mess,
+            })
+        }catch(err){
+            next(err)
+        }
       },
 
       renderManageStudent: async(req,res,next)=>{
@@ -144,10 +156,11 @@ module.exports={
             hasMess=true
         }
 
-        let allStus = await adminM.getAll("HocSinh")
+        try{
+            let allStus = await adminM.getAll("HocSinh")
         let allClasses = await adminM.getAll("Lop")
 
-        console.log(allClasses);
+        // console.log(allClasses);
 
         allStus=allStus.map(item=>{
             let classname = ""
@@ -169,6 +182,9 @@ module.exports={
             allClasses: allClasses,
             
         })
+        }catch(err){
+            next(err)
+        }
       
       },
       renderManageRule: (req,res,next)=>{
@@ -201,13 +217,10 @@ module.exports={
       },
 
       handleCreateAcc: async(req,res,next)=>{
-        //console.log(req.body);
-        //validate data
-
-        // kiem tra siso lop dinh them vao (si so toi da)
+        
         switch (req.body.accountType) {
             case 'student':
-                {
+                try{
                 let qdSiSo = await adminM.getQuiDinh("qdsiso")
                 //console.log(qdSiSo);
                 let siSoToiDa = qdSiSo.giaTri
@@ -244,7 +257,9 @@ module.exports={
         
                 let account={}
                 account.username= nextID
-                account.password="123"
+                let tmppass= "123"
+                let pwhash= await bcrypt.hash(tmppass, saltRounds);
+                account.password=pwhash
                 account.type="3"
                 let insertAcc = await adminM.insertAccount(account)
                 //console.log(insertAcc);
@@ -265,9 +280,12 @@ module.exports={
                 req.session.message = "Successful insert student!!!"
                 res.redirect("/createacc")
                 break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'teacher':
-                {
+                try{
                 console.log(req.body);
                 if(!req.body.fullname ||!req.body.birthday ||!req.body.address ||!req.body.email){
                     req.session.error = "Please fill all data, try again!!!"
@@ -279,7 +297,9 @@ module.exports={
         
                 let account={}
                 account.username= nextID
-                account.password="123"
+                let tmppass= "123"
+                let pwhash= await bcrypt.hash(tmppass, saltRounds);
+                account.password=pwhash
                 account.type="2"
                 let insertAcc = await adminM.insertAccount(account)
 
@@ -306,6 +326,9 @@ module.exports={
                 req.session.message = "Successful insert teacher!!!"
                 res.redirect("/createacc")
                 break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             default:
                 req.session.error = "Invalid account type, try again!!!"
@@ -315,57 +338,55 @@ module.exports={
       },
       
       handleCreateClass: async (req,res,next)=>{
-        //console.log("handleCreateClass");
-        // //console.log(req.body);
         if(req.body){
-           let  {grade,classname,classsize,headteacher} = req.body
-           //console.log("body data:::" ,grade,classname,classsize,headteacher);
-
+            try{
+                let  {grade,classname,classsize,headteacher} = req.body
+                let data ={}
+                // validate data
+                if(!req.body.grade){
+                    req.session.error = "Value error (Grade), try again!!!"
+                    res.redirect("/createclass")
+                }
         
-        let data ={}
-        // validate data
-        if(!req.body.grade){
-            req.session.error = "Value error (Grade), try again!!!"
-            res.redirect("/createclass")
-        }
-
-        if(req.body.grade!="10" &&req.body.grade!="11" && req.body.grade!="12"){
-            //console.log("faile check");
-            req.session.error = "Value error (Grade), try again!!!"
-            //console.log("create error");
-            return res.redirect("/createclass")
-        }else{
-            data.maKhoi = "K"+req.body.grade
-        }
+                if(req.body.grade!="10" &&req.body.grade!="11" && req.body.grade!="12"){
+                    //console.log("faile check");
+                    req.session.error = "Value error (Grade), try again!!!"
+                    //console.log("create error");
+                    return res.redirect("/createclass")
+                }else{
+                    data.maKhoi = "K"+req.body.grade
+                }
+                
         
-
-        if(!req.body.classname){
-            req.session.error = "Value error (ClassName), try again!!!"
-            return res.redirect("/createclass")
-        }
-        let existedClasses = await adminM.findByName("Lop", "tenLop", req.body.classname)
-            
-        if(existedClasses.length!=0){
-            req.session.error = "Existed Class, try again!!!"
-            res.redirect("/createclass")
-        }
-
-        if(!req.body.headteacher){
-            req.session.error = "Lost of headteacher, try again!!!"
-            res.redirect("/createclass")
-        }
-
-        let lastID = await adminM.getLastId("Lop","maLop")
-
-        data.maLop=parseInt(lastID)+1
-        data.tenLop= req.body.classname
-        data.maGVCN = req.body.headteacher
-        //console.log(data);
-        let insertResult = await adminM.insertClass(data)
-
-        req.session.message = "Successful insert class!!!"
-        res.redirect("/createclass")
-
+                if(!req.body.classname){
+                    req.session.error = "Value error (ClassName), try again!!!"
+                    return res.redirect("/createclass")
+                }
+                let existedClasses = await adminM.findByName("Lop", "tenLop", req.body.classname)
+                    
+                if(existedClasses.length!=0){
+                    req.session.error = "Existed Class, try again!!!"
+                    res.redirect("/createclass")
+                }
+        
+                if(!req.body.headteacher){
+                    req.session.error = "Lost of headteacher, try again!!!"
+                    res.redirect("/createclass")
+                }
+        
+                let lastID = await adminM.getLastId("Lop","maLop")
+        
+                data.maLop=parseInt(lastID)+1
+                data.tenLop= req.body.classname
+                data.maGVCN = req.body.headteacher
+                //console.log(data);
+                let insertResult = await adminM.insertClass(data)
+        
+                req.session.message = "Successful insert class!!!"
+                res.redirect("/createclass")
+            }catch(err){
+                next(err)
+            }
         }
       },
 
@@ -373,55 +394,73 @@ module.exports={
         console.log(req.body.option);
         switch (req.body.option) {
             case 'minOld':
-                {
+                try{
                 console.log("case min old");
                 let result = await adminM.updateQuiDinh("qdtuoimin",req.body.minOld)
                 req.session.message = "updated !!!"
                 res.redirect("/managerule")
                 break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'maxOld':
-                {
+                try{
                 console.log("case maxOld");
                 let result = await adminM.updateQuiDinh("qdtuoimax",req.body.maxOld)
                 req.session.message = "updated !!!"
                 res.redirect("/managerule")
                 break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'maxClassSize':
-                {
+                try{
                     console.log("case maxClassSize");
                     let result = await adminM.updateQuiDinh("qdsiso",req.body.maxClassSize)
                     req.session.message = "updated !!!"
                     res.redirect("/managerule")
                     break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'maxClassAmount':
-                {
+                try{
                     console.log("case maxClassAmount");
                     let result = await adminM.updateQuiDinh("qdsllop",req.body.maxClassAmount)
                     req.session.message = "updated !!!"
                     res.redirect("/managerule")
                     break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'maxSubject':
-                {
+                try{
                     console.log("case maxSubject");
                     let result = await adminM.updateQuiDinh("qdslmonhoc",req.body.maxSubject)
                     req.session.message = "updated !!!"
                     res.redirect("/managerule")
                     break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'passScore':
-                {
+                try{
                     console.log("case passScore");
                     let result = await adminM.updateQuiDinh("qddiemchuan",req.body.passScore)
                     req.session.message = "updated !!!"
                     res.redirect("/managerule")
                     break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'newSubject':
-                console.log("case newSubject");
+                try{console.log("case newSubject");
 
                 let data = req.body.newSubject
                 let temp = data.normalize('NFD')
@@ -468,11 +507,18 @@ module.exports={
                 let result = await adminM.insertSubject(obj)
                 req.session.message = "updated !!!"
                 res.redirect("/managerule")
-                break;
+                break;}
+                catch(err){
+                    next(err)
+                    break;
+                }
 
             case 'changeSubject':
-                console.log("case changeSubject");
-                break;
+                try{console.log("case changeSubject");
+                break;}catch(err){
+                    next(err)
+                    break;                
+                }
             default:
                 req.session.error = "Error, try again!!!"
                 res.redirect("/managerule")
@@ -484,17 +530,20 @@ module.exports={
         console.log(req.body);
         switch (req.body.option) {
             case 'delete':
-            {
+            try{
                 let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.teacherid)
                 let dlGV = await adminM.deleteByID("GiaoVien","maGV",req.body.teacherid)
                 let dlPC = await adminM.deleteByID("PhanCong","maGV",req.body.teacherid)
                 req.session.message = "updated !!!"
                 res.redirect("/manageteacher")
                 break;
+            }catch(err){
+                next(err)
+                break;
             }
 
             case 'update':
-            {
+            try{
                 
                 let updateMH = await adminM.updateSubForTeacher(req.body.teacherid, req.body.subject)
                 
@@ -513,9 +562,14 @@ module.exports={
                 req.session.message = "updated !!!"
                 res.redirect("/manageteacher")
                 break;
+            }catch(err){
+                next(err)
+                break;
             }
 
             default:
+                req.session.error = "error !!!"
+                res.redirect("/manageteacher")
                 break;
         }
       },
@@ -524,15 +578,18 @@ module.exports={
         console.log(req.body);
         switch (req.body.option) {
             case 'delete':
-                {
+                try{
                 let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.studentid)
                 let dlHS = await adminM.deleteByID("HocSinh","maHS",req.body.studentid)
                 req.session.message = "deleted !!!"
                 res.redirect("/managestudent")
                 break;
+                }catch(err){
+                    next(err)
+                    break;
                 }
             case 'update':
-            {   
+            try{   
                 let qdSiSo = await adminM.getQuiDinh("qdsiso")
                 //console.log(qdSiSo);
                 let siSoToiDa = qdSiSo.giaTri
@@ -552,6 +609,9 @@ module.exports={
                 let updateStu = await adminM.updateClassForStudent(req.body.studentid, req.body.classstu)
                 req.session.message = "updated !!!"
                 res.redirect("/managestudent")
+                break;
+            }catch(err){
+                next(err)
                 break;
             }
         

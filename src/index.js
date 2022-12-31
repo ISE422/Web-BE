@@ -42,7 +42,6 @@ app.use("/", myRouter);
 
 app.use(adminRoute)
 app.use(teacherRoute)
-
 app.use(studentRoutes);
 
 

@@ -1,5 +1,6 @@
 const {getClient} = require('../config/postgres')
 
+
 module.exports={
     getLastId: async(tablename, nameField)=>{
         var client = await getClient()
