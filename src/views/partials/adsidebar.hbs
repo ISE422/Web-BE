@@ -1,0 +1,109 @@
+<div
+  class="sidebar"
+  id="side_nav"
+  style="background: #c5eeeb; min-width: 250px; max-width: 250px; position: relative;"
+>
+  <div style="position: fixed;">
+    <div class="header-box px-2 pt-3 pb-4">
+      <img
+        src="imgs/logo.png"
+        style=" height: 150px;
+                    width: 150px;
+                    object-fit: fill;"
+        class="mx-auto d-block pb-3"
+      />
+      <h1 class="fs-4"><span
+          class="text-dark rounded shadow px-2 mx-5 d-block text-center"
+          style="background: #f8c4d9;"
+        >Admin</span></h1>
+    </div>
+
+    <ul class="list-unstyled px-4 py-2">
+      <li class="py-2">
+        <form id="createaccform" action="/createacc">
+          <a
+            id="createaccbtn"
+            {{! href="./admin_createAccount.html"  }}
+            class="text-decoration-none"
+          >
+            <i class="fa-regular fa-user"></i>
+            Create account</a>
+        </form>
+      </li>
+      <li class="py-2">
+        <form action="/createclass" id="createclassform">
+          <a
+            {{! href="./admin_createClass.html" }}
+            id="createclassbtn"
+            class="text-decoration-none"
+          ><i class="fa-regular fa-clipboard"></i> Create class</a>
+        </form>
+      </li>
+      <li class="py-2">
+        <form action="/manageteacher" id="manageteacherform" >
+          <a
+            {{! href="./admin_manageTeachers.html" }}
+            id="manageteacherbtn"
+            class="text-decoration-none"
+          ><i class="fa-solid fa-list"></i> Manage teachers</a>
+        </form>
+      </li>
+      <li class="py-2">
+        <form action="managestudent" id="managestudentform" >
+          <a
+            {{! href="./admin_manageStudents.html" }}
+            id="managestudentbtn"
+            class="text-decoration-none"
+          ><i class="fa-solid fa-list"></i> Manage students</a>
+        </form>
+      </li>
+      <li class="py-2">
+        <form action="/managerule" id="manageruleform">
+          <a
+            id="managerulebtn"
+            {{!-- href="./admin_manageRules.html" --}}
+            class="text-decoration-none"
+          ><i class="fa-regular fa-pen-to-square"></i> Manage rules</a>
+        </form>
+      </li>
+    </ul>
+    <hr style="background: #FEB7D3;" class="mx-2" />
+    <div class="text-center">
+<form id="logoutform" action="/logout" 
+         method="post">
+        <a
+            id="logoutbtn" href="#" class="text-decoration-none">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>Sign out</a>
+        </form>
+    </div>
+    
+  </div>
+</div>
+
+<script src="./jquery.js"></script>
+</script>
+<script>
+    $('#logoutbtn').click(function (){ 
+    $('#logoutform').submit()
+  });
+  $('#createaccbtn').click(function (){ 
+    $('#createaccform').submit()
+  });
+  $('#createclassbtn').click(function (){ 
+    $('#createclassform').submit()
+  });
+  $('#manageteacherbtn').click(function (){ 
+    $('#manageteacherform').submit()
+  });
+  $('#managestudentbtn').click(function (){ 
+    $('#managestudentform').submit()
+  });
+  $('#managerulebtn').click(function (){ 
+    $('#manageruleform').submit()
+  });
+  $("li").hover(function(){
+  $(this).css("cursor", "pointer");
+});
+
+
+</script>

@@ -1,12 +1,111 @@
-<div class="row">
-        <h5 class="card-reader mgl-20 color-blue">HOME</h5>
-        <h5>ROLE: {{role}}</h5>
-        <button
-        onclick="window.location.href='/{{role}}'"
-        class="btn btn-outline-success"
-      >INFORMATION</button>
-      <button
-        onclick="window.location.href='/notification'"
-        class="btn btn-outline-success"
-      >NOTICE</button>
-</div>
+<div class="main-container d-flex">
+        {{>adsidebar}}
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+            <div class="col-md-12 fs-2 p-2 text-white text-center rounded mb-5" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Create Account</div>
+            <form action="" class="container">
+                <div class="row justify-content-around">
+                    <label class="col-1" for="account">Account:</label>
+                    <select class="col-2" name="account" id="account">
+                        <option value="student">Học sinh</option>
+                        <option value="teacher">Giáo viên</option>
+                    </select>
+
+                    <label class="col-1" for="subject">Subject:</label>
+                    <select class="col-1" name="subject" id="subject">
+                        <option value="Toán">Toán</option>
+                        <option value="Lý">Lý</option>
+                        <option value="Hóa">Hóa</option>
+                        <option value="Sinh">Sinh</option>
+                        <option value="Sử">Sử</option>
+                        <option value="Địa">Địa</option>
+                        <option value="Văn">Văn</option>
+                        <option value="Đ.Đức">Đ.Đức</option>
+                        <option value="T.Dục">T.Dục</option>
+                    </select>
+
+                    <label class="col-1" for="classteach">Teaching:</label>
+                    <select class="col-1" name="classteach" id="classteach">
+                        <option value="10.5">10.5</option>
+                        <option value="11.4">11.4</option>
+                    </select>
+        
+                    <label class="col-1" for="classstudying">Studying:</label>
+                    <select class="col-1" name="classstudying" id="class">
+                        <option value="10.5">10.5</option>
+                        <option value="11.4">11.4</option>
+                    </select>
+
+                    <div class="col-md-6 mt-3">
+                        <label for="inputFirstName" class="form-label">First Name</label>
+                        <input
+                          type="firstName"
+                          class="form-control"
+                          id="inputFirstName"
+                          placeholder="Lê Thành"
+                        />
+                      </div>
+                      <div class="col-md-6 mt-3">
+                        <label for="inputLastName" class="form-label">Last Name</label>
+                        <input
+                          type="lastName"
+                          class="form-control"
+                          id="inputLastName"
+                          placeholder="Nam"
+                        />
+                      </div>
+                
+                      <div class="col-md-6 mt-2">
+                        <label for="inputBirthday" class="form-label">Your Birthday</label>
+                        <input
+                          type="birthday"
+                          class="form-control"
+                          id="inputBirthday"
+                          placeholder="04/03/2002"
+                        />
+                      </div>
+                
+                      <div class="col-md-1"></div>
+                
+                      <div class="col-md-5 mt-2">
+                        <label for="inputGender" class="form-label">Gender</label>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="genderRad" id="maleRadio" checked>
+                          <label class="form-check-label" for="maleRadio">
+                            Male
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="genderRad" id="femaleRadio">
+                          <label class="form-check-label" for="femaleRadio">
+                            Female
+                          </label>
+                        </div>
+                      </div>
+                     
+                      <div class="col-md-12">
+                        <label for="inputAddress" class="form-label">Address</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputAddress"
+                          placeholder="1234 Main St"
+                        />
+                      </div>
+                
+                      <div class="col-md-12">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="inputEmail"
+                          placeholder="abc@gmail.com"
+                        />
+                      </div>
+                    <div class="row my-5 justify-content-center">   
+                        <button class="btn col-1" style="background: #f8c4d9; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

@@ -1,2 +1,170 @@
-<h1>page for {{content}}</h1>
-<h1>username: {{username}}</h1>
+<div class="main-container d-flex">
+        {{>sidebar}}
+
+        <div class="content container mt-1" style="min-height: 100vh; width: 100%;">
+          <div class="col-md-12 fs-2 p-2 text-white text-center rounded" style="background: #f8c4d9;">Profile</div>
+
+          {{#if hasError}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-danger">{{error}}</h5>
+          </div>
+          {{/if}}
+          {{#if hasMess}}
+          <div class="col-md-12 p-2 text-center">
+              <h5 class=" text-success">{{mess}}</h5>
+          </div>
+          {{/if}}
+
+          <form id="infoform" method="post" action="/infomation" class="row g-3 mx-3 my-1">
+            
+            <div class="col-md-12">
+              <label for="ID" class="form-label">ID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="ID"
+                name="teacherid"
+                value="{{info.maGV}}"
+                hidden
+              />
+            </div>
+            
+            <div class="col-md-12">
+              <label for="inputName" class="form-label">Name</label>
+              <input
+                type="firstName"
+                class="form-control"
+                id="inputName"
+                name="fullname"
+                value="{{info.hoTen}}"
+                disabled
+              />
+            </div>
+      
+            <div class="col-md-6">
+              <label for="inputBirthday" class="form-label">Your Birthday</label>
+              <input
+                type="birthday"
+                class="form-control"
+                id="inputBirthday"
+                name="birthday"
+                value="{{info.ngaySinh}}"
+                disabled
+              />
+            </div>
+      
+            <div class="col-md-1"></div>
+
+      
+            <div class="col-md-auto">
+              <label for="inputGender" class="form-label">Gender</label>
+              <div class="form-check">
+                <input class="form-check-input" 
+                type="radio" 
+                name="genderRad" id="maleRadio" 
+                value=false
+                
+                {{#if info.gioiTinh}}
+                {{else}}
+                checked
+                {{/if}}
+                disabled>
+                <label class="form-check-label" for="maleRadio">
+                  Male
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" 
+                type="radio" name="genderRad" id="femaleRadio" 
+                value=true
+                {{#if info.gioiTinh}}
+                checked
+                {{/if}}
+                disabled>
+                <label class="form-check-label" for="femaleRadio">
+                  Female
+                </label>
+              </div>
+            </div>
+           
+            <div class="col-md-12">
+              <label for="inputAddress" class="form-label">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputAddress"
+                name="address"
+                disabled
+                value="{{info.diaChi}}"
+              />
+            </div>
+      
+            <div class="col-md-12">
+              <label for="inputEmail" class="form-label">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail"
+                name="email"
+               value="{{info.email}}" 
+                disabled
+              />
+            </div>
+      
+            <div class="col-10"></div>
+          <div class="container d-flex justify-content-center gap-1">
+            <div class="col-10"></div>
+            <button type="button" id="btn_edit" class="btn" style="background: #f8c4d9;">Edit</button>
+            <button type="button" id="btn_close" class="btn text-light" style=" margin-right: 8px; background: #b43030;">Close</button>
+            <button type="submit" id="btn_save" class="btn" style="background: #31da3a;">Save</button>
+          </div>
+          </form>
+          
+        </div>
+    </div>
+<h1>{{obj.gender}}</h1>
+<script>
+      {{!-- console.log($("input[name=genderRad]").val())
+      $("input[name=genderRad]").val('')
+      console.log($("input[name=genderRad]").val()) --}}
+
+      $(document).ready(function(){
+            $("#btn_close").hide()
+            $("#btn_save").hide()
+
+            $("#btn_edit").click(function(){
+                $("#btn_save").show()
+                $("#btn_edit").hide()
+                $("#btn_close").show()
+                $("#inputName").prop("disabled", false).focus();
+                $("#inputBirthday").prop("disabled", false);
+                $("#maleRadio").prop("disabled", false);
+                $("#femaleRadio").prop("disabled", false);
+                $("#inputAddress").prop("disabled", false);
+                $("#inputEmail").prop("disabled", false);
+                $("#totalClass").prop("disabled", false);
+                $("#changeSubject").prop("disabled", false);
+            })
+
+            $("#btn_close").click(function(){
+                // TODO: send input to server
+                $("#btn_save").hide()
+                $("#btn_edit").show()
+                $("#btn_close").hide()
+                $("#inputName").prop("disabled", true);
+                $("#inputBirthday").prop("disabled", true);
+                $("#maleRadio").prop("disabled", true);
+                $("#femaleRadio").prop("disabled", true);
+                $("#inputAddress").prop("disabled", true);
+                $("#inputEmail").prop("disabled", true);
+                $("#totalClass").prop("disabled", true);
+                $("#changeSubject").prop("disabled", true);
+            })
+
+            // BE set cho nút Save
+            $("#btn_save").click(function(){
+                // TODO: send input to server
+                $('#infoform').submit()
+            })
+        })
+    </script>

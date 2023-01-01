@@ -1,3 +1,4 @@
+
   <div
     class="sidebar"
     id="side_nav"
@@ -15,13 +16,13 @@
         <h1 class="fs-4"><span
             class="text-dark rounded shadow px-2 mx-5 d-block text-center"
             style="background: #f8c4d9;"
-          >Teacher</span></h1>
+          >Student</span></h1>
       </div>
 
       <ul class="list-unstyled px-4 py-2">
 
             <li  class="py-2">
-        <form id="infoform" action="/infomation">
+        <form id="infoform" action="/student-infomation">
                 <a
                 id="infobtn"
             class="text-decoration-none"
@@ -29,27 +30,19 @@
         </form>
           </li>
         
-        <li class="py-2">
-        <form id="classesform" action="/classes">
-          <a
-            id="classesbtn"
-            class="text-decoration-none"
-          ><i class="fa-regular fa-clipboard"></i> Classes</a>
-        </form>
-          </li>
         
         <li class="py-2">
-        <form id="scoresform" action="/scores">
+        <form id="scoresform" action="/student-scores">
           <a
           id="scoresbtn"
             class="text-decoration-none"
-          ><i class="fa-regular fa-star"></i> Student's Score</a>
+          ><i class="fa-regular fa-star"></i> Score</a>
         </form>
           </li>
         
         
         <li class="py-2">
-        <form id="leaderboardform" action="/leaderboard">
+        <form id="leaderboardform" action="/student-leaderboard">
           <a
           id="leaderboardbtn"
             class="text-decoration-none"
@@ -57,14 +50,7 @@
         </form>
           </li>
         
-        <li class="py-2">
-        <form id="createreportform" action="/createreport">
-          <a
-          id="createreportbtn"
-            class="text-decoration-none"
-          ><i class="fa-regular fa-pen-to-square"></i> Create report</a>
-        </form>
-          </li>
+
       </ul>
       <hr style="background: #FEB7D3;" class="mx-2" />
       <div class="text-center">
@@ -79,7 +65,6 @@
   </div>
 
 
-
 <script src="./jquery.js"></script>
 </script>
 <script>
@@ -90,22 +75,15 @@
   $('#infobtn').click(function (){ 
     $('#infoform').submit()
   });
-  $('#classesbtn').click(function (){ 
-    $('#classesform').submit()
-  });
   $('#scoresbtn').click(function (){ 
     $('#scoresform').submit()
   });
   $('#leaderboardbtn').click(function (){ 
     $('#leaderboardform').submit()
   });
-  $('#createreportbtn').click(function (){ 
-    $('#createreportform').submit()
-  });
   $("li").hover(function(){
   $(this).css("cursor", "pointer");
 });
-
 
 
 </script>
