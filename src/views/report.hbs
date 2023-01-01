@@ -8,7 +8,7 @@
                     <label class="col-1" for="report">Report:</label>
                     <select id="select_BC" class="col-2" name="report" id="report">
                         <option value="BCMH">Báo cáo môn học</option>
-                        {{!-- <option value="1">Báo cáo học kỳ</option> --}}
+                        <option value="BCHK">Báo cáo học kỳ</option> 
                     </select>
 
                     <div class="col-1"></div>
@@ -49,45 +49,34 @@
             </form>
 
             <hr>
-            
-            {{!-- <div id="table1">
+            {{#if rpHK}}
+             <div id="table1">
                 <div class="col-md-12 fs-4 p-2 text-center mb-4">Báo Cáo Học Kỳ</div>
                 <table id="BCHK" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Class</th>
-                            <th>Total sutdents</th>
+                            <th>Total students</th>
                             <th>Passed</th>
                             <th>Rate</th>
                         </tr>
                     </thead>
                     <tbody>
+                    {{#each reports}}
                         <tr>
-                            <td>1</td>
-                            <td>10.3</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
+                            <td>{{this.rank}}</td>
+                            <td>{{this.tenLop}}</td>
+                            <td>{{this.siso}}</td>
+                            <td>{{this.SoHocSinhPass}}</td>
+                            <td>{{this.rate}} %</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>10.4</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>10.5</td>
-                            <td>40</td>
-                            <td>35</td>
-                            <td>x</td>
-                        </tr>
+                        {{/each}}
                     </tbody>
             </table>
-            </div> --}}
-
+            </div> 
+            {{/if}}
+            {{#if rpMH}}
              <div id="table2">
                 <div class="col-md-12 fs-4 p-2 text-center mb-4">Báo Cáo Môn Học</div>
                 <table id="BCMH" class="table table-striped" style="width:100%">
@@ -115,6 +104,7 @@
                     </tbody>
             </table>
             </div> 
+            {{/if}}
         </div>
   
     </div>

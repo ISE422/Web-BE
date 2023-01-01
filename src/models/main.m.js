@@ -9,8 +9,8 @@ module.exports = {
         ans.password = "123";
         ans.role = "admin";
         break;
-      case "30000001":
-        ans.username = "30000001";
+      case "30000002":
+        ans.username = "30000002";
         ans.password = "123";
         ans.role = "student";
         break;

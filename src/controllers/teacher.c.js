@@ -152,6 +152,18 @@ exports.postTopStudent = async function (req, res, next) {
 exports.getCreateReport = async function (req, res, next) {
   let nameSub = req.session.nameSub;
   let reports = req.session.reportTeacher;
+  let typeRp = req.session.typeRp;
+  let reportMH, reportHK;
+
+  if (typeRp) {
+    if (typeRp == "1") {
+      reportMH = true;
+      reportHK = null;
+    } else {
+      reportMH = null;
+      reportHK = true;
+    }
+  }
   if (!reports) {
     reports = null;
   } else {
@@ -164,11 +176,12 @@ exports.getCreateReport = async function (req, res, next) {
       i++;
     });
   }
-  console.log(reports);
   try {
     res.render("report", {
       pageTitle: "Teacher Report",
       reports: reports,
+      rpHK: reportHK,
+      rpMH: reportMH,
     });
   } catch (error) {
     next(error);
@@ -178,13 +191,35 @@ exports.getCreateReport = async function (req, res, next) {
 exports.postCreateReport = async function (req, res, next) {
   const info = req.body;
   const diemchuan = await teacherM.getDiemChuan();
-  const report = await teacherM.getReport(info, diemchuan.giaTri);
-  const fullRp = await teacherM.getSiSo(report);
+  let arrClass = [];
+  let reportArrs = [];
 
-  const nameSub = await teacherM.getNameSub(info.subjects);
-
-  req.session.reportTeacher = fullRp;
-  req.session.nameSub = nameSub;
-
+  if (info.report == "BCMH") {
+    const report = await teacherM.getReport(info, diemchuan.giaTri);
+    const fullRp = await teacherM.getSiSo(report);
+    const nameSub = await teacherM.getNameSub(info.subjects);
+    req.session.reportTeacher = fullRp;
+    req.session.nameSub = nameSub;
+    req.session.typeRp = "1";
+  } else {
+    const report = await teacherM.getReportTotal(info, diemchuan.giaTri);
+    const grouped = teacherM.groupBy(report, (student) => student.tenLop);
+    report.map((obj) => {
+      const check = arrClass.includes(obj.tenLop);
+      if (!check) {
+        arrClass.push(obj.tenLop);
+      }
+    });
+    arrClass.map((obj) => {
+      tamp = {};
+      tamp.SoHocSinhPass = grouped.get(obj).length;
+      tamp.tenLop = obj;
+      reportArrs.push(tamp);
+    });
+    const fullRp = await teacherM.getSiSo(reportArrs);
+    req.session.reportTeacher = fullRp;
+    req.session.typeRp = "2";
+    req.session.nameSub = "All";
+  }
   res.redirect("/createreport");
 };

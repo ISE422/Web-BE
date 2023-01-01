@@ -77,3 +77,26 @@ exports.getNameSub = async function (mmh) {
   );
   return rs.rows;
 };
+
+exports.getReportTotal = async function (info, diemchuan) {
+  const client = await getClient();
+  const rs = await client.query(
+    'SELECT HS."maLop",L."tenLop", AVG(KQ."DiemTKMON") FROM PUBLIC."KetQua" AS KQ, PUBLIC."HocSinh" AS HS, PUBLIC."HocKiNamHoc" AS HK, PUBLIC."Lop" AS L WHERE KQ."maHS" = HS."maHS" AND KQ."maHKNH" = HK."maHKNH" AND HK."tenHK" = $1 AND HK."tenNH" = $2 AND L."maLop" = HS."maLop" GROUP BY HS."maLop",L."tenLop",KQ."maHS" HAVING AVG(KQ."DiemTKMON") >= $3 ',
+    [info.semester, info.year, diemchuan]
+  );
+  return rs.rows;
+};
+
+exports.groupBy = function (list, keyGetter) {
+  const map = new Map();
+  list.forEach((item) => {
+    const key = keyGetter(item);
+    const collection = map.get(key);
+    if (!collection) {
+      map.set(key, [item]);
+    } else {
+      collection.push(item);
+    }
+  });
+  return map;
+};
