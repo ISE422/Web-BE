@@ -38,11 +38,20 @@ router.get(
   teacher.getTopStudent
 );
 
+router.get(
+  "/createreport",
+  auth.authHaveUser,
+  auth.authRole("teacher"),
+  teacher.getCreateReport
+);
+
 router.post("/leaderboard", teacher.postTopStudent);
 
 router.post("/scores", teacher.postScores);
 
 router.post("/edit-score-student", teacher.postEditScoreStudent);
+
+router.post("/createreport", teacher.postCreateReport);
 
 // router.get('/createreport',  auth.authHaveUser, auth.authRole('teacher'), teacher.renderCreateReport)
 

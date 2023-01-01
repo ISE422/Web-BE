@@ -44,6 +44,7 @@ exports.postEditScoreStudent = async function (req, res, next) {
     .updateScoreStudent(info)
     .then((result) => {
       req.flash("report", "You have successfully update score-student !");
+      req.session.postArrScoreStudents = null;
       res.redirect("/scores");
     })
     .catch((err) => {
@@ -146,4 +147,44 @@ exports.postTopStudent = async function (req, res, next) {
 
   req.session.topRanks = rankingArr;
   res.redirect("/leaderboard");
+};
+
+exports.getCreateReport = async function (req, res, next) {
+  let nameSub = req.session.nameSub;
+  let reports = req.session.reportTeacher;
+  if (!reports) {
+    reports = null;
+  } else {
+    let i = 1;
+
+    reports.map((info) => {
+      info.rank = i;
+      info.nameSub = nameSub[0].tenMH;
+      info.rate = ((info.SoHocSinhPass / info.siso) * 100).toFixed(1);
+      i++;
+    });
+  }
+  console.log(reports);
+  try {
+    res.render("report", {
+      pageTitle: "Teacher Report",
+      reports: reports,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.postCreateReport = async function (req, res, next) {
+  const info = req.body;
+  const diemchuan = await teacherM.getDiemChuan();
+  const report = await teacherM.getReport(info, diemchuan.giaTri);
+  const fullRp = await teacherM.getSiSo(report);
+
+  const nameSub = await teacherM.getNameSub(info.subjects);
+
+  req.session.reportTeacher = fullRp;
+  req.session.nameSub = nameSub;
+
+  res.redirect("/createreport");
 };
