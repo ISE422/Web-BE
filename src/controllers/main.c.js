@@ -6,23 +6,20 @@ const adminM = require("../models/admin.m")
 
 module.exports = {
   renderHomePage: (req, res, next) => {
-
-    console.log(req.session);
+    // console.log(req.session);
     switch (req.session.role) {
-      case 'admin':
-        res.redirect("/createacc")
+      case "admin":
+        res.redirect("/createacc");
         break;
-      case 'teacher':
-        res.redirect("/infomation")
+      case "teacher":
+        res.redirect("/infomation");
         break;
-      case 'student':
-        res.redirect("/student-infomation")
+      case "student":
+        res.redirect("/student-infomation");
       default:
-        res.redirect("/login")
+        res.redirect("/login");
         break;
     }
-    
-
   },
   renderLoginPage: (req, res, next) => {
 

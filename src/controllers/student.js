@@ -138,7 +138,6 @@ exports.postTopStudent = async function (req, res, next) {
     topRank = await studentM.getTopRankYear(info);
     let diem;
     topRank.map((obj) => {
-      // console.log(obj);
       if (tamp == 0) {
         diem = 0;
       }
@@ -156,7 +155,6 @@ exports.postTopStudent = async function (req, res, next) {
     topRank = await studentM.getTopRankSemesterYear(info);
     let diem;
     topRank.map((obj) => {
-      // console.log(obj);
       if (tamp == 0) {
         diem = 0;
       }
@@ -181,7 +179,6 @@ exports.postTopStudent = async function (req, res, next) {
     // Điểm theo môn học theo cả năm
     topRank = await studentM.getTopRankSubYear(info);
     let diem;
-    console.log(topRank);
     topRank.map((obj) => {
       if (tamp == 0) {
         diem = 0;
@@ -203,8 +200,4 @@ exports.postTopStudent = async function (req, res, next) {
 
   req.session.topRanks = rankingArr;
   res.redirect("/student-leaderboard");
-};
-
-exports.test = async function (req, res, next) {
-  const test = await studentM.updateDiemTKMON();
 };
