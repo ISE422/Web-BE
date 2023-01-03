@@ -1,7 +1,114 @@
+
 const studentM = require("../models/student");
 const teacherM = require("../models/teacher");
 
-exports.getScores = async function (req, res, next) {
+const adminM = require("../models/admin.m")
+const teacherMH = require("../models/teacher.m")
+
+module.exports={
+    renderInfo: async (req, res, next) => {
+
+        try{
+        let error = ""
+        let hasErr = false
+
+        if(req.session.error!="")
+        {
+            error=req.session.error
+            req.session.error=""
+            hasErr=true
+        }
+
+        let hasMess = false
+        let mess = ""
+
+        if(req.session.message!="")
+        {
+            mess=req.session.message
+            req.session.message=""
+            hasMess=true
+        }
+
+        console.log(req.session);
+
+        let info = await adminM.findByName("GiaoVien", "maGV", req.session.uid)
+        console.log(info);
+        
+        res.render("info",{
+            error: error,
+            hasError: hasErr,
+            hasMess: hasMess,
+            mess: mess,
+            info: info[0]
+        })
+
+        }catch(err){
+            next(err)
+        }
+      },
+    
+      handleUpdateInfo: async(req, res, next) => {
+        try {
+            console.log(req.body);
+
+            data={}
+            data.maGV=req.body.teacherid
+            data.fullname=req.body.fullname
+            data.genderRad=req.body.genderRad
+            data.email=req.body.email
+            data.birthday=req.body.birthday
+            data.address=req.body.address
+
+            let updateTeacher = await teacherMH.updateInfoGiaoVien(data)
+            req.session.message = "UPDATED !!!"
+            res.redirect("/infomation")
+
+        } catch (error) {
+            next(error)
+        }
+      },
+
+      renderClasses: async(req,res,next)=>{
+        try {
+            console.log(req.query);
+
+            let error = ""
+            let hasErr = false
+    
+            if(req.session.error!="")
+            {
+                error=req.session.error
+                req.session.error=""
+                hasErr=true
+            }
+    
+            let hasMess = false
+            let mess = ""
+    
+            if(req.session.message!="")
+            {
+                mess=req.session.message
+                req.session.message=""
+                hasMess=true
+            }
+
+            let classes = await adminM.getAllClasses()
+            let list = await teacherMH.getAllByID("HocSinh", "maLop", req.query.class)
+        res.render("classes",{
+            error: error,
+            hasError: hasErr,
+            hasMess: hasMess,
+            mess: mess,
+            classes: classes,
+            list: list,
+        })
+        } catch (error) {
+
+            next(error)
+        }
+      },
+      
+      getScores: async function (req, res, next) {
   const uid = req.session.uid;
 
   const infoClass = await teacherM.getInfoClass(uid);
@@ -28,7 +135,7 @@ exports.getScores = async function (req, res, next) {
   });
 };
 
-exports.postScores = async function (req, res, next) {
+postScores = async function (req, res, next) {
   const info = req.body;
 
   const tamp = await teacherM.getScoreStudents(info);
@@ -38,7 +145,7 @@ exports.postScores = async function (req, res, next) {
   res.redirect("/scores");
 };
 
-exports.postEditScoreStudent = async function (req, res, next) {
+exports.postEditScoreStudent : async function (req, res, next) {
   const info = req.body;
   teacherM
     .updateScoreStudent(info)
@@ -52,7 +159,7 @@ exports.postEditScoreStudent = async function (req, res, next) {
     });
 };
 
-exports.getTopStudent = async function (req, res, next) {
+getTopStudent = async function (req, res, next) {
   let topRanks = req.session.topRanks;
   if (!topRanks) {
     topRanks = null;
@@ -75,7 +182,7 @@ exports.getTopStudent = async function (req, res, next) {
   }
 };
 
-exports.postTopStudent = async function (req, res, next) {
+postTopStudent : async function (req, res, next) {
   const info = req.body;
   let topRank;
   let arrS = [];
@@ -149,7 +256,7 @@ exports.postTopStudent = async function (req, res, next) {
   res.redirect("/leaderboard");
 };
 
-exports.getCreateReport = async function (req, res, next) {
+getCreateReport : async function (req, res, next) {
   let nameSub = req.session.nameSub;
   let reports = req.session.reportTeacher;
   let typeRp = req.session.typeRp;
@@ -188,7 +295,8 @@ exports.getCreateReport = async function (req, res, next) {
   }
 };
 
-exports.postCreateReport = async function (req, res, next) {
+
+postCreateReport : async function (req, res, next) {
   const info = req.body;
   const diemchuan = await teacherM.getDiemChuan();
   let arrClass = [];
@@ -223,3 +331,24 @@ exports.postCreateReport = async function (req, res, next) {
   }
   res.redirect("/createreport");
 };
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

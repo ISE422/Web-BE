@@ -8,7 +8,7 @@
                     <label class="col-1" for="class">Class:</label>
                     <select class="col-1" name="class" id="class">
                         {{#each classes}}
-                        <option value="{{this}}">{{this}}</option>
+                        <option value="{{this.maLop}}">{{this.tenLop}}</option>
                         {{/each}}
                     </select>
                     <div class="col-3"></div>
@@ -28,11 +28,11 @@
                 <tbody>
                     {{#each list}}
                     <tr>
-                        <td>{{this.no}}</td>
-                        <td>{{this.name}}</td>
-                        <td>{{this.gender}}</td>
-                        <td>{{this.dob}}</td>
-                        <td>{{this.address}}</td>
+                        <td>{{this.maHS}}</td>
+                        <td>{{this.hoTen}}</td>
+                        <td>{{this.gioiTinh}}</td>
+                        <td>{{this.ngaySinh}}</td>
+                        <td>{{this.diaChi}}</td>
                     </tr>
                     {{/each}}
                 </tbody>

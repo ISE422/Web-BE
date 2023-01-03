@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const path = require("path");
 const flash = require("connect-flash");
 const myRouter = require("./router/main.r.js");
+const http = require("http")
 
 const adminRoute = require("./router/admin.r")
 const teacherRoute = require("./router/teacher.r")
@@ -42,7 +43,6 @@ app.use("/", myRouter);
 
 app.use(adminRoute)
 app.use(teacherRoute)
-
 app.use(studentRoutes);
 
 
@@ -51,4 +51,5 @@ app.use((err, req, res, next) => {
   res.status(statusCode).send(err.message);
 });
 
-app.listen(port, () => console.log(`sever is running at port ${port}`));
+const server=http.createServer(app)
+server.listen(port, () => console.log(`sever is running at port ${port}`));
