@@ -133,9 +133,9 @@ module.exports={
     idSubjects: infoClass[0].maMH,
     scores: scores,
   });
-};
+},
 
-postScores = async function (req, res, next) {
+postScores : async function (req, res, next) {
   const info = req.body;
 
   const tamp = await teacherM.getScoreStudents(info);
@@ -143,9 +143,9 @@ postScores = async function (req, res, next) {
   req.session.postArrScoreStudents = tamp;
 
   res.redirect("/scores");
-};
+},
 
-exports.postEditScoreStudent : async function (req, res, next) {
+postEditScoreStudent : async function (req, res, next) {
   const info = req.body;
   teacherM
     .updateScoreStudent(info)
@@ -157,9 +157,9 @@ exports.postEditScoreStudent : async function (req, res, next) {
     .catch((err) => {
       console.log(err);
     });
-};
+},
 
-getTopStudent = async function (req, res, next) {
+getTopStudent : async function (req, res, next) {
   let topRanks = req.session.topRanks;
   if (!topRanks) {
     topRanks = null;
@@ -180,7 +180,7 @@ getTopStudent = async function (req, res, next) {
   } catch (error) {
     next(error);
   }
-};
+},
 
 postTopStudent : async function (req, res, next) {
   const info = req.body;
@@ -254,7 +254,7 @@ postTopStudent : async function (req, res, next) {
 
   req.session.topRanks = rankingArr;
   res.redirect("/leaderboard");
-};
+},
 
 getCreateReport : async function (req, res, next) {
   let nameSub = req.session.nameSub;
@@ -293,7 +293,7 @@ getCreateReport : async function (req, res, next) {
   } catch (error) {
     next(error);
   }
-};
+},
 
 
 postCreateReport : async function (req, res, next) {
@@ -330,9 +330,7 @@ postCreateReport : async function (req, res, next) {
     req.session.nameSub = "All";
   }
   res.redirect("/createreport");
-};
-
-
+},
 
 }
 
