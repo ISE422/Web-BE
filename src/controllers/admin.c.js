@@ -556,11 +556,19 @@ module.exports={
         switch (req.body.option) {
             case 'delete':
             try{
-                let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.teacherid)
-                let dlGV = await adminM.deleteByID("GiaoVien","maGV",req.body.teacherid)
-                let dlPC = await adminM.deleteByID("PhanCong","maGV",req.body.teacherid)
-                req.session.message = "updated !!!"
-                res.redirect("/manageteacher")
+                let findTeacher = await adminM.findValueInTable("GiaoVien", "maGV", req.body.teacherid)
+                console.log("find::", findTeacher);
+                if(findTeacher){
+                    let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.teacherid)
+                    let dlGV = await adminM.deleteByID("GiaoVien","maGV",req.body.teacherid)
+                    let dlPC = await adminM.deleteByID("PhanCong","maGV",req.body.teacherid)
+                    req.session.message = "updated !!!"
+                    res.redirect("/manageteacher")
+                }else{
+                    req.session.error = "Current teacher is not existed !!!"
+                    res.redirect("/manageteacher")
+                }
+                
                 break;
             }catch(err){
                 next(err)
@@ -605,10 +613,18 @@ module.exports={
         switch (req.body.option) {
             case 'delete':
                 try{
-                let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.studentid)
-                let dlHS = await adminM.deleteByID("HocSinh","maHS",req.body.studentid)
-                req.session.message = "deleted !!!"
-                res.redirect("/managestudent")
+                    let findSt = await adminM.findValueInTable("HocSinh", "maHS", req.body.studentid)
+                console.log("find::", findSt);
+                if(findSt){
+                    let dlAcc = await adminM.deleteByID("TaiKhoan","username",req.body.studentid)
+                    let dlHS = await adminM.deleteByID("HocSinh","maHS",req.body.studentid)
+                    req.session.message = "deleted !!!"
+                    res.redirect("/managestudent")
+                }else{
+                    req.session.error = "Current student is not existed !!!"
+                    res.redirect("/managestudent")
+                }
+                
                 break;
                 }catch(err){
                     next(err)

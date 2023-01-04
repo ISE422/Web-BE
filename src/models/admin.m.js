@@ -1,30 +1,28 @@
-const {getClient} = require('../config/postgres')
+// const {getdb} = require('../config/postgres')
+const {db,pgp} = require("../config/postgres")
 
 
 module.exports={
     getLastId: async(tablename, nameField)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select * from public."${tablename}"
         ORDER BY "${nameField}" ASC 
         `)
-        if(rs.rows.length==0){
+        if(rs.length==0){
             return 0
         }else{
-            return (rs.rows[rs.rows.length-1])[nameField]
+            return (rs[rs.length-1])[nameField]
         }
     },
 
     findByName: async(tablename, nameField, value)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select * from public."${tablename}" where "${nameField}" like '${value}'`)
-        return rs.rows
+        return rs
     },
 
     insertClass: async(data)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`insert into public."Lop" 
         ("maLop", "maKhoi", "tenLop", "maGVCN") values
         ('${data.maLop}','${data.maKhoi}','${data.tenLop}','${data.maGVCN}')`)
@@ -32,38 +30,33 @@ module.exports={
     },
 
     getAllClasses: async()=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select "maLop", "tenLop" from public."Lop"`)
-        return rs.rows
+        return rs
     },
 
     getAllSubjects: async()=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select "maMH", "tenMH" from public."MonHoc"`)
-        return rs.rows
+        return rs
     },
 
     getQuiDinh: async(name)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select "tenQD", "giaTri" from public."QuiDinh" 
         where "maQD" like '${name}'`)
-        return rs.rows[0]
+        return rs[0]
     },
     
     countStInClass: async(classID)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select * from public."HocSinh" 
         where "maLop" like '${classID}'`)
-        return rs.rows.length
+        return rs.length
     },
 
     insertAccount: async(data)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`insert into public."TaiKhoan" 
         ("username", "password", "type") values
         ('${data.username}','${data.password}','${data.type}')`)
@@ -71,8 +64,7 @@ module.exports={
     },
 
     insertStudent: async(data)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`insert into public."HocSinh" 
         ("maHS", "maLop", "hoTen","gioiTinh","email","ngaySinh","diaChi") 
         values
@@ -83,8 +75,7 @@ module.exports={
     },
 
     insertTeacher: async(data)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`insert into public."GiaoVien" 
         ("maGV", "maMH", "hoTen","gioiTinh","email","ngaySinh","diaChi") 
         values
@@ -94,8 +85,7 @@ module.exports={
     },
 
     insertPhanCong: async(data)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`insert into public."PhanCong" 
         ("maPhanCong", "maGV", "maLop") 
         values
@@ -104,8 +94,7 @@ module.exports={
     },
 
     updateQuiDinh: async(maqd, value)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (
             `UPDATE public."QuiDinh"
             SET "giaTri"=${value}
@@ -116,8 +105,7 @@ module.exports={
 
     insertSubject: async(obj)=>{
         
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (
             `INSERT INTO public."MonHoc"(
                 "maMH", "tenMH", "diemChuan")
@@ -127,82 +115,74 @@ module.exports={
     },
 
     countRowInTable: async(tablename)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select * from public."${tablename}"`)
-        return rs.rows.length
+        return rs.length
     },
 
     findValueInTable: async(tablename, field, value)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select * from public."${tablename}"
         where "${field}" like '${value}'
         `)
-        if(rs.rows.length==0) return false
+        if(rs.length==0) return false
         else{
             return true
         }
     },
 
     getAll: async(tablename)=>{
-        var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`select * from public."${tablename}"
         `)
-        return rs.rows
+        return rs
     },
 
     deleteByID: async(tablename,fieldID,value)=>{
-    var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`
         DELETE FROM public."${tablename}"
 	    WHERE "${fieldID}" like '${value}';
         `)
-        return rs.rows
+        return rs
     },
 
     updatePhanCong: async(maGV, maLop)=>{
-    var client = await getClient()
-        var rs = await client.query
+        var rs = await db.any
         (`
         UPDATE public."PhanCong"
         SET "maLop"='${maLop}'
         WHERE "maGV" like '${maGV}';
         `)
-        return rs.rows
+        return rs
     },
 
     updateSubForTeacher: async(maGV, maMH)=>{
-        var client = await getClient()
-            var rs = await client.query
+            var rs = await db.any
             (`
             UPDATE public."GiaoVien"
             SET "maMH"='${maMH}'
             WHERE "maGV" like '${maGV}';
             `)
-            return rs.rows
+            return rs
         },
     updateClassForStudent: async(maHS, maLop)=>{
-        var client = await getClient()
-            var rs = await client.query
+            var rs = await db.any
             (`
             UPDATE public."HocSinh"
             SET "maLop"='${maLop}'
             WHERE "maHS" like '${maHS}';
             `)
-            return rs.rows
+            return rs
         },
     updateSubName: async(maMH, tenMH)=>{
-        var client = await getClient()
-            var rs = await client.query
+            var rs = await db.any
             (`
             UPDATE public."MonHoc"
             SET "tenMH"='${tenMH}'
             WHERE "maMH" like '${maMH}';
             `)
-            return rs.rows
+            return rs
     }
     
 }

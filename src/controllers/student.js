@@ -5,11 +5,11 @@ exports.getInfoStudent = async function (req, res, next) {
     const un = req.session.uid;
     const info = await studentM.getInfo(un);
 
-    info.rows[0].gioiTinh
-      ? (info.rows[0].isfemale = true)
-      : (info.rows[0].ismale = true);
+    info[0].gioiTinh
+      ? (info[0].isfemale = true)
+      : (info[0].ismale = true);
     res.render("info-student", {
-      obj: info.rows[0],
+      obj: info[0],
       pageTitle: "Home Student",
       editing: false,
     });
@@ -26,11 +26,11 @@ exports.getEditInfoStudent = async function (req, res, next) {
     }
     const un = req.session.uid;
     const info = await studentM.getInfo(un);
-    info.rows[0].gioiTinh
-      ? (info.rows[0].isfemale = true)
-      : (info.rows[0].ismale = true);
+    info[0].gioiTinh
+      ? (info[0].isfemale = true)
+      : (info[0].ismale = true);
     res.render("info-student", {
-      obj: info.rows[0],
+      obj: info[0],
       pageTitle: "Home Student",
       editing: true,
     });
@@ -46,7 +46,7 @@ exports.postInfoStudent = async function (req, res, next) {
     obj.genderRad == "Nu" ? (obj.gioiTinh = true) : (obj.gioiTinh = false);
 
     const uEmail = await studentM.getEmail(obj.Email, un);
-    if (uEmail.rows.length !== 0) {
+    if (uEmail.length !== 0) {
       req.flash("error", "E-mail exists already !");
       return res.redirect("/edit-student-infomation?edit=true");
     }
@@ -90,17 +90,17 @@ exports.postScoresStudent = async function (req, res, next) {
   if (info.semester == "all") {
     let hkArr = [];
     const maHKNHS = await studentM.getMaHKNHS(info.year);
-    maHKNHS.rows.map((info) => {
+    maHKNHS.map((info) => {
       hkArr.push(info.maHKNH);
     });
     const scores = await studentM.getScoresYear(un, hkArr);
-    req.session.scores = scores.rows;
+    req.session.scores = scores;
   } else {
     const maHKNH = await studentM.getMaHKNH(info);
 
-    const scores = await studentM.getScores(un, maHKNH.rows[0].maHKNH);
+    const scores = await studentM.getScores(un, maHKNH[0].maHKNH);
 
-    req.session.scores = scores.rows;
+    req.session.scores = scores;
   }
   res.redirect("/student-scores");
 };

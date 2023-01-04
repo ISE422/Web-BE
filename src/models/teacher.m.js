@@ -1,9 +1,10 @@
-const {getClient} = require('../config/postgres')
+// const {getClient} = require('../config/postgres')
+const {db,pgp} = require("../config/postgres")
 
 module.exports={
     updateInfoGiaoVien: async(data)=>{
-        var client = await getClient()
-        var rs = await client.query
+        
+        var rs = await db.any
         (
             `UPDATE public."GiaoVien"
             SET "hoTen"='${data.fullname}',
@@ -17,12 +18,12 @@ module.exports={
     },
 
     getAllByID: async(tablename, field, value)=>{
-        var client = await getClient()
-        var rs = await client.query
+        
+        var rs = await db.any
         (
             `select * from public."${tablename}"
             WHERE "${field}" like '${value}';`
         )
-        return rs.rows
+        return rs
     }
 }
