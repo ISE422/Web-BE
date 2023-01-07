@@ -50,8 +50,11 @@ module.exports = {
       let userInDB = await loginM.getAccByUsername(username)
 
       if(userInDB.length==0){
-        req.session.error="Invalid username, try again!!!"
-        res.redirect("/login")
+        res.status(403).json({
+          "message": "invalid username"
+        })
+        // req.session.error="Invalid username, try again!!!"
+        // res.redirect("/login")
         return
       }
 
@@ -60,8 +63,11 @@ module.exports = {
       let cmp = await bcrypt.compare(password,userInDB.password)
       console.log(cmp);
       if(!cmp){
-        req.session.error="Wrong password, try again!!!"
-        res.redirect("/login")
+        res.status(403).json({
+          "message": "wrong password"
+        })
+        // req.session.error="Wrong password, try again!!!"
+        // res.redirect("/login")
         return
       }
 
@@ -91,7 +97,12 @@ module.exports = {
             maxAge: 5 * 60 * 1000,
             httpOnly: true,
           });
-          res.redirect("/");
+          console.log("hello");
+          // res.status(200).redirect("/");
+          res.status(200).json({
+            "uid": userInDB.username,
+            "role": userInDB.role
+          })
         });
       });
     } catch (err) {
